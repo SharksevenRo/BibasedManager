@@ -54,7 +54,6 @@ import com.nchu.util.ReflectionUtils;
 public class HibernateSupportDao<T,PK extends Serializable> extends BasicHibernateDao<T, PK>{
 
 	public HibernateSupportDao(){
-
 	}
 
 	public HibernateSupportDao(Class<T> entityClass){

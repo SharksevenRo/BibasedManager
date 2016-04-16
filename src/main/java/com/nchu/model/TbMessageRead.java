@@ -21,9 +21,12 @@ public class TbMessageRead implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private TbMessage tbMessage;
-	private TbUser tbUser;
+	private TbUser tbUserByUserId;
+	private TbMessage tbMessageByMessageId;
+	private TbMessage tbMessageByMessageid;
+	private TbUser tbUserByUserid;
 	private Timestamp time;
+	private Short isread;
 	private Short isRead;
 
 	// Constructors
@@ -32,12 +35,21 @@ public class TbMessageRead implements java.io.Serializable {
 	public TbMessageRead() {
 	}
 
-	/** full constructor */
-	public TbMessageRead(TbMessage tbMessage, TbUser tbUser, Timestamp time,
-			Short isRead) {
-		this.tbMessage = tbMessage;
-		this.tbUser = tbUser;
+	/** minimal constructor */
+	public TbMessageRead(Timestamp time) {
 		this.time = time;
+	}
+
+	/** full constructor */
+	public TbMessageRead(TbUser tbUserByUserId, TbMessage tbMessageByMessageId,
+			TbMessage tbMessageByMessageid, TbUser tbUserByUserid,
+			Timestamp time, Short isread, Short isRead) {
+		this.tbUserByUserId = tbUserByUserId;
+		this.tbMessageByMessageId = tbMessageByMessageId;
+		this.tbMessageByMessageid = tbMessageByMessageid;
+		this.tbUserByUserid = tbUserByUserid;
+		this.time = time;
+		this.isread = isread;
 		this.isRead = isRead;
 	}
 
@@ -54,26 +66,46 @@ public class TbMessageRead implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "messageId")
-	public TbMessage getTbMessage() {
-		return this.tbMessage;
+	@JoinColumn(name = "user_id")
+	public TbUser getTbUserByUserId() {
+		return this.tbUserByUserId;
 	}
 
-	public void setTbMessage(TbMessage tbMessage) {
-		this.tbMessage = tbMessage;
+	public void setTbUserByUserId(TbUser tbUserByUserId) {
+		this.tbUserByUserId = tbUserByUserId;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
-	public TbUser getTbUser() {
-		return this.tbUser;
+	@JoinColumn(name = "message_id")
+	public TbMessage getTbMessageByMessageId() {
+		return this.tbMessageByMessageId;
 	}
 
-	public void setTbUser(TbUser tbUser) {
-		this.tbUser = tbUser;
+	public void setTbMessageByMessageId(TbMessage tbMessageByMessageId) {
+		this.tbMessageByMessageId = tbMessageByMessageId;
 	}
 
-	@Column(name = "time", length = 19)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "messageid")
+	public TbMessage getTbMessageByMessageid() {
+		return this.tbMessageByMessageid;
+	}
+
+	public void setTbMessageByMessageid(TbMessage tbMessageByMessageid) {
+		this.tbMessageByMessageid = tbMessageByMessageid;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid")
+	public TbUser getTbUserByUserid() {
+		return this.tbUserByUserid;
+	}
+
+	public void setTbUserByUserid(TbUser tbUserByUserid) {
+		this.tbUserByUserid = tbUserByUserid;
+	}
+
+	@Column(name = "time", nullable = false, length = 19)
 	public Timestamp getTime() {
 		return this.time;
 	}
@@ -82,7 +114,16 @@ public class TbMessageRead implements java.io.Serializable {
 		this.time = time;
 	}
 
-	@Column(name = "isRead")
+	@Column(name = "isread")
+	public Short getIsread() {
+		return this.isread;
+	}
+
+	public void setIsread(Short isread) {
+		this.isread = isread;
+	}
+
+	@Column(name = "is_read")
 	public Short getIsRead() {
 		return this.isRead;
 	}

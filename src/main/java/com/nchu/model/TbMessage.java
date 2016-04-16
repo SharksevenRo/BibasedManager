@@ -29,9 +29,13 @@ public class TbMessage implements java.io.Serializable {
 	private TbUser tbUser;
 	private Time content;
 	private Integer receiver;
-	private Integer parentId;
+	private Integer parentid;
 	private Timestamp time;
-	private Set<TbMessageRead> tbMessageReads = new HashSet<TbMessageRead>(0);
+	private Integer parentId;
+	private Set<TbMessageRead> tbMessageReadsForMessageId = new HashSet<TbMessageRead>(
+			0);
+	private Set<TbMessageRead> tbMessageReadsForMessageid = new HashSet<TbMessageRead>(
+			0);
 
 	// Constructors
 
@@ -40,19 +44,24 @@ public class TbMessage implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public TbMessage(Time content) {
+	public TbMessage(Time content, Timestamp time) {
 		this.content = content;
+		this.time = time;
 	}
 
 	/** full constructor */
 	public TbMessage(TbUser tbUser, Time content, Integer receiver,
-			Integer parentId, Timestamp time, Set<TbMessageRead> tbMessageReads) {
+			Integer parentid, Timestamp time, Integer parentId,
+			Set<TbMessageRead> tbMessageReadsForMessageId,
+			Set<TbMessageRead> tbMessageReadsForMessageid) {
 		this.tbUser = tbUser;
 		this.content = content;
 		this.receiver = receiver;
-		this.parentId = parentId;
+		this.parentid = parentid;
 		this.time = time;
-		this.tbMessageReads = tbMessageReads;
+		this.parentId = parentId;
+		this.tbMessageReadsForMessageId = tbMessageReadsForMessageId;
+		this.tbMessageReadsForMessageid = tbMessageReadsForMessageid;
 	}
 
 	// Property accessors
@@ -95,16 +104,16 @@ public class TbMessage implements java.io.Serializable {
 		this.receiver = receiver;
 	}
 
-	@Column(name = "parentId")
-	public Integer getParentId() {
-		return this.parentId;
+	@Column(name = "parentid")
+	public Integer getParentid() {
+		return this.parentid;
 	}
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
+	public void setParentid(Integer parentid) {
+		this.parentid = parentid;
 	}
 
-	@Column(name = "time", length = 19)
+	@Column(name = "time", nullable = false, length = 19)
 	public Timestamp getTime() {
 		return this.time;
 	}
@@ -113,13 +122,33 @@ public class TbMessage implements java.io.Serializable {
 		this.time = time;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbMessage")
-	public Set<TbMessageRead> getTbMessageReads() {
-		return this.tbMessageReads;
+	@Column(name = "parent_id")
+	public Integer getParentId() {
+		return this.parentId;
 	}
 
-	public void setTbMessageReads(Set<TbMessageRead> tbMessageReads) {
-		this.tbMessageReads = tbMessageReads;
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbMessageByMessageId")
+	public Set<TbMessageRead> getTbMessageReadsForMessageId() {
+		return this.tbMessageReadsForMessageId;
+	}
+
+	public void setTbMessageReadsForMessageId(
+			Set<TbMessageRead> tbMessageReadsForMessageId) {
+		this.tbMessageReadsForMessageId = tbMessageReadsForMessageId;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbMessageByMessageid")
+	public Set<TbMessageRead> getTbMessageReadsForMessageid() {
+		return this.tbMessageReadsForMessageid;
+	}
+
+	public void setTbMessageReadsForMessageid(
+			Set<TbMessageRead> tbMessageReadsForMessageid) {
+		this.tbMessageReadsForMessageid = tbMessageReadsForMessageid;
 	}
 
 }

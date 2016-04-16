@@ -20,10 +20,12 @@ public class TbGrade implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private TbUser tbUser;
-	private Integer type;
+	private TbUser tbUserByUserId;
+	private TbUser tbUserByUserid;
+	private Integer taskid;
 	private Integer score;
 	private Integer judgment;
+	private Integer taskId;
 
 	// Constructors
 
@@ -32,11 +34,14 @@ public class TbGrade implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbGrade(TbUser tbUser, Integer type, Integer score, Integer judgment) {
-		this.tbUser = tbUser;
-		this.type = type;
+	public TbGrade(TbUser tbUserByUserId, TbUser tbUserByUserid,
+			Integer taskid, Integer score, Integer judgment, Integer taskId) {
+		this.tbUserByUserId = tbUserByUserId;
+		this.tbUserByUserid = tbUserByUserid;
+		this.taskid = taskid;
 		this.score = score;
 		this.judgment = judgment;
+		this.taskId = taskId;
 	}
 
 	// Property accessors
@@ -52,22 +57,32 @@ public class TbGrade implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId")
-	public TbUser getTbUser() {
-		return this.tbUser;
+	@JoinColumn(name = "user_id")
+	public TbUser getTbUserByUserId() {
+		return this.tbUserByUserId;
 	}
 
-	public void setTbUser(TbUser tbUser) {
-		this.tbUser = tbUser;
+	public void setTbUserByUserId(TbUser tbUserByUserId) {
+		this.tbUserByUserId = tbUserByUserId;
 	}
 
-	@Column(name = "type")
-	public Integer getType() {
-		return this.type;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid")
+	public TbUser getTbUserByUserid() {
+		return this.tbUserByUserid;
 	}
 
-	public void setType(Integer type) {
-		this.type = type;
+	public void setTbUserByUserid(TbUser tbUserByUserid) {
+		this.tbUserByUserid = tbUserByUserid;
+	}
+
+	@Column(name = "taskid")
+	public Integer getTaskid() {
+		return this.taskid;
+	}
+
+	public void setTaskid(Integer taskid) {
+		this.taskid = taskid;
 	}
 
 	@Column(name = "score")
@@ -86,6 +101,15 @@ public class TbGrade implements java.io.Serializable {
 
 	public void setJudgment(Integer judgment) {
 		this.judgment = judgment;
+	}
+
+	@Column(name = "task_id")
+	public Integer getTaskId() {
+		return this.taskId;
+	}
+
+	public void setTaskId(Integer taskId) {
+		this.taskId = taskId;
 	}
 
 }

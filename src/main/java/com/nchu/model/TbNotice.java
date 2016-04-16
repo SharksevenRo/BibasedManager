@@ -33,7 +33,10 @@ public class TbNotice implements java.io.Serializable {
 	private Short teavisible;
 	private Integer scope;
 	private Short type;
-	private Set<TbNoticeRead> tbNoticeReads = new HashSet<TbNoticeRead>(0);
+	private Set<TbNoticeRead> tbNoticeReadsForNoticeid = new HashSet<TbNoticeRead>(
+			0);
+	private Set<TbNoticeRead> tbNoticeReadsForNoticeId = new HashSet<TbNoticeRead>(
+			0);
 
 	// Constructors
 
@@ -41,10 +44,16 @@ public class TbNotice implements java.io.Serializable {
 	public TbNotice() {
 	}
 
+	/** minimal constructor */
+	public TbNotice(Timestamp time) {
+		this.time = time;
+	}
+
 	/** full constructor */
 	public TbNotice(TbUser tbUser, String title, String content,
 			Timestamp time, Short stuvisible, Short teavisible, Integer scope,
-			Short type, Set<TbNoticeRead> tbNoticeReads) {
+			Short type, Set<TbNoticeRead> tbNoticeReadsForNoticeid,
+			Set<TbNoticeRead> tbNoticeReadsForNoticeId) {
 		this.tbUser = tbUser;
 		this.title = title;
 		this.content = content;
@@ -53,7 +62,8 @@ public class TbNotice implements java.io.Serializable {
 		this.teavisible = teavisible;
 		this.scope = scope;
 		this.type = type;
-		this.tbNoticeReads = tbNoticeReads;
+		this.tbNoticeReadsForNoticeid = tbNoticeReadsForNoticeid;
+		this.tbNoticeReadsForNoticeId = tbNoticeReadsForNoticeId;
 	}
 
 	// Property accessors
@@ -96,7 +106,7 @@ public class TbNotice implements java.io.Serializable {
 		this.content = content;
 	}
 
-	@Column(name = "time", length = 19)
+	@Column(name = "time", nullable = false, length = 19)
 	public Timestamp getTime() {
 		return this.time;
 	}
@@ -141,13 +151,24 @@ public class TbNotice implements java.io.Serializable {
 		this.type = type;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbNotice")
-	public Set<TbNoticeRead> getTbNoticeReads() {
-		return this.tbNoticeReads;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbNoticeByNoticeid")
+	public Set<TbNoticeRead> getTbNoticeReadsForNoticeid() {
+		return this.tbNoticeReadsForNoticeid;
 	}
 
-	public void setTbNoticeReads(Set<TbNoticeRead> tbNoticeReads) {
-		this.tbNoticeReads = tbNoticeReads;
+	public void setTbNoticeReadsForNoticeid(
+			Set<TbNoticeRead> tbNoticeReadsForNoticeid) {
+		this.tbNoticeReadsForNoticeid = tbNoticeReadsForNoticeid;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbNoticeByNoticeId")
+	public Set<TbNoticeRead> getTbNoticeReadsForNoticeId() {
+		return this.tbNoticeReadsForNoticeId;
+	}
+
+	public void setTbNoticeReadsForNoticeId(
+			Set<TbNoticeRead> tbNoticeReadsForNoticeId) {
+		this.tbNoticeReadsForNoticeId = tbNoticeReadsForNoticeId;
 	}
 
 }

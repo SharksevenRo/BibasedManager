@@ -1,11 +1,15 @@
 package com.nchu.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,9 +23,11 @@ public class TbNoticeRead implements java.io.Serializable {
 
 	// Fields
 
-	private TbNoticeReadId id;
-	private TbNotice tbNotice;
-	private TbUser tbUser;
+	private Integer id;
+	private TbUser tbUserByUserId;
+	private TbNotice tbNoticeByNoticeId;
+	private TbNotice tbNoticeByNoticeid;
+	private TbUser tbUserByUserid;
 
 	// Constructors
 
@@ -29,51 +35,66 @@ public class TbNoticeRead implements java.io.Serializable {
 	public TbNoticeRead() {
 	}
 
-	/** minimal constructor */
-	public TbNoticeRead(TbNoticeReadId id) {
-		this.id = id;
-	}
-
 	/** full constructor */
-	public TbNoticeRead(TbNoticeReadId id, TbNotice tbNotice, TbUser tbUser) {
-		this.id = id;
-		this.tbNotice = tbNotice;
-		this.tbUser = tbUser;
+	public TbNoticeRead( TbUser tbUserByUserId,
+			TbNotice tbNoticeByNoticeId, TbNotice tbNoticeByNoticeid,
+			TbUser tbUserByUserid) {
+		this.tbUserByUserId = tbUserByUserId;
+		this.tbNoticeByNoticeId = tbNoticeByNoticeId;
+		this.tbNoticeByNoticeid = tbNoticeByNoticeid;
+		this.tbUserByUserid = tbUserByUserid;
 	}
 
-	// Property accessors
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "noticeId", column = @Column(name = "noticeId")),
-			@AttributeOverride(name = "userId", column = @Column(name = "userId")),
-			@AttributeOverride(name = "time", column = @Column(name = "time", length = 19)),
-			@AttributeOverride(name = "isRead", column = @Column(name = "isRead")) })
-	public TbNoticeReadId getId() {
-		return this.id;
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
+		return id;
 	}
 
-	public void setId(TbNoticeReadId id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "noticeId", insertable = false, updatable = false)
-	public TbNotice getTbNotice() {
-		return this.tbNotice;
+	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
+	public TbUser getTbUserByUserId() {
+		return this.tbUserByUserId;
 	}
 
-	public void setTbNotice(TbNotice tbNotice) {
-		this.tbNotice = tbNotice;
+	public void setTbUserByUserId(TbUser tbUserByUserId) {
+		this.tbUserByUserId = tbUserByUserId;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "userId", insertable = false, updatable = false)
-	public TbUser getTbUser() {
-		return this.tbUser;
+	@JoinColumn(name = "notice_id", nullable = false, insertable = false, updatable = false)
+	public TbNotice getTbNoticeByNoticeId() {
+		return this.tbNoticeByNoticeId;
 	}
 
-	public void setTbUser(TbUser tbUser) {
-		this.tbUser = tbUser;
+	public void setTbNoticeByNoticeId(TbNotice tbNoticeByNoticeId) {
+		this.tbNoticeByNoticeId = tbNoticeByNoticeId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "noticeid", insertable = false, updatable = false)
+	public TbNotice getTbNoticeByNoticeid() {
+		return this.tbNoticeByNoticeid;
+	}
+
+	public void setTbNoticeByNoticeid(TbNotice tbNoticeByNoticeid) {
+		this.tbNoticeByNoticeid = tbNoticeByNoticeid;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "userid", insertable = false, updatable = false)
+	public TbUser getTbUserByUserid() {
+		return this.tbUserByUserid;
+	}
+
+	public void setTbUserByUserid(TbUser tbUserByUserid) {
+		this.tbUserByUserid = tbUserByUserid;
 	}
 
 }

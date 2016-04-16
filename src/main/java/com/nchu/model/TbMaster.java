@@ -17,7 +17,7 @@ public class TbMaster implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private Integer MKey;
+	private Integer mkey;
 	private String type;
 	private String reander;
 
@@ -28,8 +28,8 @@ public class TbMaster implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbMaster(Integer MKey, String type, String reander) {
-		this.MKey = MKey;
+	public TbMaster(Integer mkey, String type, String reander) {
+		this.mkey = mkey;
 		this.type = type;
 		this.reander = reander;
 	}
@@ -46,16 +46,16 @@ public class TbMaster implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "m_key")
-	public Integer getMKey() {
-		return this.MKey;
+	@Column(name = "mkey")
+	public Integer getMkey() {
+		return this.mkey;
 	}
 
-	public void setMKey(Integer MKey) {
-		this.MKey = MKey;
+	public void setMkey(Integer mkey) {
+		this.mkey = mkey;
 	}
 
-	@Column(name = "type")
+	@Column(name = "type", length = 50)
 	public String getType() {
 		return this.type;
 	}

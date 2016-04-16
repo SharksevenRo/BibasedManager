@@ -25,10 +25,11 @@ public class TbTask implements java.io.Serializable {
 	private Integer id;
 	private TbUser tbUser;
 	private String name;
-	private Integer parentId;
+	private Integer parentid;
 	private Date limitime;
 	private String descrption;
 	private Integer scope;
+	private Integer parentId;
 
 	// Constructors
 
@@ -37,14 +38,15 @@ public class TbTask implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbTask(TbUser tbUser, String name, Integer parentId, Date limitime,
-			String descrption, Integer scope) {
+	public TbTask(TbUser tbUser, String name, Integer parentid, Date limitime,
+			String descrption, Integer scope, Integer parentId) {
 		this.tbUser = tbUser;
 		this.name = name;
-		this.parentId = parentId;
+		this.parentid = parentid;
 		this.limitime = limitime;
 		this.descrption = descrption;
 		this.scope = scope;
+		this.parentId = parentId;
 	}
 
 	// Property accessors
@@ -78,13 +80,13 @@ public class TbTask implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "parentId")
-	public Integer getParentId() {
-		return this.parentId;
+	@Column(name = "parentid")
+	public Integer getParentid() {
+		return this.parentid;
 	}
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
+	public void setParentid(Integer parentid) {
+		this.parentid = parentid;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -113,6 +115,15 @@ public class TbTask implements java.io.Serializable {
 
 	public void setScope(Integer scope) {
 		this.scope = scope;
+	}
+
+	@Column(name = "parent_id")
+	public Integer getParentId() {
+		return this.parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 
 }

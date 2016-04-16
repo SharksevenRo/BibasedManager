@@ -22,22 +22,14 @@ public class TbRole implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private String roleName;
-	private Set<TbRoleFunction> tbRoleFunctions = new HashSet<TbRoleFunction>(0);
-	private Set<TbUser> tbUsers = new HashSet<TbUser>(0);
+	private String rolename;
 
 	// Constructors
 
-	/** default constructor */
-	public TbRole() {
-	}
 
 	/** full constructor */
-	public TbRole(String roleName, Set<TbRoleFunction> tbRoleFunctions,
-			Set<TbUser> tbUsers) {
-		this.roleName = roleName;
-		this.tbRoleFunctions = tbRoleFunctions;
-		this.tbUsers = tbUsers;
+	public TbRole() {
+		this.rolename = rolename;
 	}
 
 	// Property accessors
@@ -52,31 +44,12 @@ public class TbRole implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "roleName", length = 10)
-	public String getRoleName() {
-		return this.roleName;
+	@Column(name = "rolename")
+	public String getRolename() {
+		return this.rolename;
 	}
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
 	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbRole")
-	public Set<TbRoleFunction> getTbRoleFunctions() {
-		return this.tbRoleFunctions;
-	}
-
-	public void setTbRoleFunctions(Set<TbRoleFunction> tbRoleFunctions) {
-		this.tbRoleFunctions = tbRoleFunctions;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbRole")
-	public Set<TbUser> getTbUsers() {
-		return this.tbUsers;
-	}
-
-	public void setTbUsers(Set<TbUser> tbUsers) {
-		this.tbUsers = tbUsers;
-	}
-
 }
