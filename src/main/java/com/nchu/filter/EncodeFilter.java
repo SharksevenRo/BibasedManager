@@ -13,6 +13,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+
+import com.nchu.web.support.CookieUtil;
  
 /**
  * 乱码过滤器
@@ -35,6 +38,8 @@ public class EncodeFilter implements Filter {
  
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		//将根路径放到cookie中 
+	
 		//--响应乱码解决 
 		request.setCharacterEncoding(encode);
 		response.setContentType("text/html;charset="+encode);

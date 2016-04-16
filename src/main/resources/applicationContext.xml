@@ -80,6 +80,8 @@
 				hibernate.hbm2ddl.auto=update
 				hibernate.format_sql=true
 				current_session_context_class=thread
+				connection.useUnicode=true
+				connection.characterEncoding=UTF-8
 			</value>
 		</property>
 		<property name="packagesToScan" value="com.nchu" />
