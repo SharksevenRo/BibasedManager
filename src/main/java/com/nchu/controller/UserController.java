@@ -27,13 +27,11 @@ public class UserController {
 	@Autowired
 	@Qualifier("roleFunctionService")
 	private RoleFunctionService<TbRoleFunction> roleFunctionService;
-	
-	
 
 	@RequestMapping("/user/register")
 	@ResponseBody
-	public String register(TbUser user){
-		
+	public String register(TbUser user) {
+
 		try {
 			user.setPassword(Md5.GetMD5Code(user.getPassword()));
 			user.setRoleId(1);
@@ -43,61 +41,63 @@ public class UserController {
 			e.printStackTrace();
 			return "/erro/404.html";
 		}
-		
+
 	}
 
 	@RequestMapping("/user/login")
-	public String login(TbUser user,HttpServletRequest request){
-		
+	public String login(TbUser user, HttpServletRequest request) {
+
 		try {
 			user.setPassword(Md5.GetMD5Code(user.getPassword()));
 			List<TbUser> loadAll = baseService.loadAll(user);
-			if(loadAll.size()==1){
+			if (loadAll.size() == 1) {
 				TbUser tbUser = loadAll.get(0);
-				if(user.getPassword().equals(tbUser.getPassword())&&user.getCode().equals(tbUser.getCode())){
-					List<MenuRender> renders=new ArrayList<MenuRender>();
+				if (user.getPassword().equals(tbUser.getPassword()) && user.getCode().equals(tbUser.getCode())) {
+					List<MenuRender> renders = new ArrayList<MenuRender>();
 					MenuRender render;
-					List<TbRoleFunction> loadAll2 = roleFunctionService.loadAll(new TbRoleFunction(tbUser.getRoleId(), null));
+					List<TbRoleFunction> loadAll2 = roleFunctionService
+							.loadAll(new TbRoleFunction(tbUser.getRoleId(), null));
 					for (TbRoleFunction tbRoleFunction : loadAll2) {
-						
-							if(tbRoleFunction.getParentId()==0){
-								render=new MenuRender();
-								render.setId(tbRoleFunction.getId());
-								render.setFunctionUrl(tbRoleFunction.getFunctionUrl());
-								render.setName(tbRoleFunction.getName());
-								renders.add(render);
-							}
+
+						if (tbRoleFunction.getParentId() == 0) {
+							render = new MenuRender();
+							render.setId(tbRoleFunction.getId());
+							render.setFunctionUrl(tbRoleFunction.getFunctionUrl());
+							render.setName(tbRoleFunction.getName());
+							renders.add(render);
+						}
 					}
-					List<MenuRender> child=new ArrayList<MenuRender>();
+					List<MenuRender> child;
 					for (MenuRender render1 : renders) {
-						
+						child = new ArrayList<MenuRender>();
 						for (TbRoleFunction tbRoleFunction : loadAll2) {
-							render=new MenuRender();
-							if(render1.getId().equals(tbRoleFunction.getParentId())){
-								render=new MenuRender();
-								render.setFunctionUrl(tbRoleFunction.getFunctionUrl());
-								render.setName(tbRoleFunction.getName());
-								child.add(render);
-								render1.setChild(child);
+							render = new MenuRender();
+							if (tbRoleFunction.getId() != 0) {
+								if (render1.getId().equals(tbRoleFunction.getParentId())) {
+									render = new MenuRender();
+									render.setFunctionUrl(tbRoleFunction.getFunctionUrl());
+									render.setName(tbRoleFunction.getName());
+									child.add(render);
+									render1.setChild(child);
+								}
 							}
-							
 						}
 					}
 					request.getSession().setAttribute("menus", renders);
 					return "/index";
 				}
 			}
-			
+
 			return "/erro/404.html";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "/erro/404.html";
 		}
-		
+
 	}
 
 	private void loadAll(TbRoleFunction tbRoleFunction) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
