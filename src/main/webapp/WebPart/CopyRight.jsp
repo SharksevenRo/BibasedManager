@@ -10,20 +10,8 @@
 		<!-- #section:basics/footer -->
 		<div class="footer-content">
 			<span class="bigger-120">
-				<span class="blue bolder">JXZCKJ</span>
-				Application &copy; 2015 NCHU NchuPandas
+				<span class="blue bolder"></span>
 			</span> &nbsp; &nbsp;
-			<span class="action-buttons">
-				<a href="javascript:void(0)">
-					<i class="ace-icon fa fa-qq light-blue bigger-150"></i>
-				</a>
-				<a href="javascript:void(0)">
-					<i class="ace-icon fa fa-weibo text-primary red bigger-150"></i>
-				</a>
-				<a href="javascript:void(0)">
-					<i class="ace-icon fa fa-windows Blue bigger-150"></i>
-				</a>
-			</span>
 		</div>
 		<!-- /section:basics/footer -->
 	</div>
