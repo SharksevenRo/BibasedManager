@@ -177,6 +177,12 @@
 													</label>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
+															<input name="phone" type="phone" required="phone" class="form-control" placeholder="联系方式" />
+															<i class="ace-icon fa fa-envelope"></i>
+														</span>
+													</label>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
 															<input name="password" type="password" required="required" class="form-control" placeholder="密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span> 

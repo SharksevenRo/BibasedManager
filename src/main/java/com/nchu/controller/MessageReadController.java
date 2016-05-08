@@ -1,5 +1,7 @@
 package com.nchu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,15 +56,12 @@ public class MessageReadController {
 
     @RequestMapping("/admin/meadia/page")
     @ResponseBody
-    public Page<TbMessageRead> page(Page<TbMessageRead> meadiaPage) {
+    public List<TbMessageRead> page(TbMessageRead meadiaPage) {
 
         try {
-            return baseService.page(meadiaPage);
+            return baseService.loadAll(meadiaPage);
         } catch (Exception e) {
-            Page<TbMessageRead> page = new Page<TbMessageRead>();
-            page.setCode(APPConstant.ERROR);
-            page.setMessage("服务器忙");
-            return page;
+           return null;
         }
     }
 

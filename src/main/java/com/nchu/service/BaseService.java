@@ -25,7 +25,7 @@ public class BaseService<T>{
 	@Autowired
 	@Qualifier(value = "hibernateSupportDao")
 
-	private HibernateSupportDao<T, Integer> dao;
+	public HibernateSupportDao<T, Integer> dao;
 
 	@Transactional
 	public void delete(T entity) {

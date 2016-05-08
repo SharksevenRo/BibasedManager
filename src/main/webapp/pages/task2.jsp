@@ -96,14 +96,7 @@
 							<!-- PAGE CONTENT BEGINS -->
 							<h3 class="header smaller lighter blue">所有课题</h3>
 
-							<div class="table-header">课题列表</div><th>
-											<p class="text-center">
-												<a class="blue buttongoods" href="javascript:void(0)"
-													id="buttonadd" oper="add"> <i
-													class="fa fa-plus-square-o bigger-150"><strong>添加课题</strong>
-												</i> </a>
-											</p>
-										</th>
+							<div class="table-header">课题列表</div>
 							<table id="sample-table-2" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
@@ -111,8 +104,7 @@
 										<th>课题名称</th>
 										<th>详情</th>
 										<th>截止时间</th>
-										<th>学生</th>
-										<th class="center">操作</th>
+										<th>选择</th>
 									</tr>
 								</thead>
 
@@ -203,7 +195,7 @@
 		function load(){
 			$.ajax({
 				type:'get',
-				url:"${pageContext.request.contextPath }/admin/task/page",
+				url:"${pageContext.request.contextPath }/admin/task/student",
 				success:function(data){
 					debugger;
 					var content=$("#tbbody");
@@ -211,83 +203,52 @@
 					if(data!=null&&data.length>0){
 						
 						for(var i=0;i<data.length;i++){
-							var stu=data[i].owner;
 							item+="<tr>"
 							+"<td>"+data[i].id+"</td>"
 							+"<td>"+data[i].name+"</td>"
 							+"<td>"+data[i].description+"</td>"
-							+"<td>"+data[i].limitime+"</td>";
-							if(stu==null){
-								item+="<td>还未确定</td>";
-							}else{
-								item+="<td>"+stu.name+"</td>"
-							}
-							
-							item+="<td>"
-							+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-							+"<a class=\"green btn_task\" href=\"javascript:void(0)\"" 
-							+"id=\""+data[i].id+"\" name=\""+data[i].name+"\" description=\""+data[i].description+"\""
-							+" limitime=\""+data[i].limitime+"\" oper=\"modify\">"
-							+	"<i class=\"fa fa-pencil bigger-150\">"
-							+		"<small>修改</small>"
-							+	"</i>"
-							+"</a>"
-							+"<a class=\"red btn_task\" id=\""+data[i].id+"\" href=\"javascript:void(0)\" name=\""+data[i].id+"\" oper=\"delete\">"
-							+"<i class=\"fa fa-trash-o bigger-150\">删除</i>"
-							+"</a>"
-						+"</div>"
-							+"</td>"
+							+"<td>"+data[i].limitime+"</td>"
+							+"<td>"
+						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
+						+"<a class=\"btn_choose\" id=\""+data[i].id+"\" href=\"javascript:void(0)\" name=\""+data[i].id+"\" oper=\"delete\">"
+						+"<i class=\"fa fa-check bigger-150\">点击选择课题</i>"
+						+"</a>"
+					+"</div>"
+						+"</td>"
 						+"</tr>"
 						}
 						content.html("");
 						content.append(item);
 					}
-					$(".btn_task").each(
+					$(".btn_choose").each(
 							
-						function(){
-							var obj=$(this);
-							obj.click(
-								function(){
-									var oper=obj.attr("oper");
-									
-									if(oper=='delete'){
-										var id=obj.attr("id")
-										$.ajax({
-											type:'get',
-											url:"${pageContext.request.contextPath }/admin/task/deleteAjax",
-											async:false,
-											data:{id:id},
-											success:function(data){
-												if(data.code==1){
-													load();
-												}else{
-													alert(data.message);
+							function(){
+								debugger;
+								var obj=$(this);
+								obj.click(
+									function(){
+										
+											var id=obj.attr("id")
+											$.ajax({
+												type:'get',
+												url:"${pageContext.request.contextPath }/stduent/chooseAjax",
+												async:false,
+												data:{taskId:id},
+												success:function(data){
+													if(data.code==1){
+														alert(data.message);
+													}else{
+														alert(data.message);
+													}
 												}
-											}
-										});
-									}else if(oper=='modify'){
-										debugger;
-										var time=obj.attr("limitime");
-										var strs=time.split("-");
-										time=strs[1]+"/"+strs[2]+"/"+strs[0];
-										$("#input_task_id").val(obj.attr("id"));
-										$("#input_task_name").val(obj.attr("name"));
-										$("#input_task_description").html(obj.attr("description"));
-										$("#datepicker").val(time);
-										$("#taskSave").html("修改");
-										$('#dialogshow').modal({
-											keyboard : true,
-											backdrop : true,
-											show : true,
-											remote : false,
-										});
-									}
-								}		
-							);
-						}		
-					);
+											});
+										}
+								);
+							}		
+						);
 				}
 			});
+			
 		}
 		load();
 		$('.date-picker').datepicker({
@@ -297,7 +258,7 @@
 		});
 		var oTable1 = $('#sample-table-2').dataTable( {
 		"aoColumns": [
-	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false},{"bSortable" : false},{"bSortable" : false}
+	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false}
 		] } );
 		
 		
@@ -325,47 +286,6 @@
 			if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
 			return 'left';
 		}
-		
-		$("#buttonadd").click(function(){
-			
-			$('#dialogshow').modal({
-				keyboard : true,
-				backdrop : true,
-				show : true,
-				remote : false,
-			});
-			
-		});
-		
-		$("#taskSave").click(
-			function(){
-				
-				var oper =$("#taskSave").html();
-				var url;
-				if(oper=="修改"){
-					url="${pageContext.request.contextPath }/admin/task/updateAjax";
-				}else{
-					$("#input_task_id").val("");
-					url="${pageContext.request.contextPath }/admin/task/saveAjax";
-				}
-				$.ajax({
-					type:'get',
-					url:url,
-					data: $("#taskInfo").serializeArray(),
-					success:function(data){
-						debugger;
-						if(data.code==1){
-							$('#dialogshow').modal('hide');
-							load();
-						}else{
-							$('#dialogshow').modal('hide');
-							alert(data.message);
-						}
-						
-					}
-				});
-			}		
-		);
 	})
 	</script>
 </body>

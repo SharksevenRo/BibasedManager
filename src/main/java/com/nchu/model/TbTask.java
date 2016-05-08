@@ -23,13 +23,13 @@ public class TbTask  implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private TbUser tbUser;
+	private TbUser owner;
+	private Integer publisher;
 	private String name;
 	private Integer parentid;
 	private Date limitime;
-	private String descrption;
+	private String description;
 	private Integer scope;
-	private Integer parentId;
 
 	// Constructors
 
@@ -38,15 +38,14 @@ public class TbTask  implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbTask(TbUser tbUser, String name, Integer parentid, Date limitime,
-			String descrption, Integer scope, Integer parentId) {
-		this.tbUser = tbUser;
+	public TbTask(TbUser owner, String name, Integer parentid, Date limitime,
+			String description, Integer scope, Integer parentId) {
+		this.owner = owner;
 		this.name = name;
 		this.parentid = parentid;
 		this.limitime = limitime;
-		this.descrption = descrption;
+		this.description = description;
 		this.scope = scope;
-		this.parentId = parentId;
 	}
 
 	// Property accessors
@@ -62,13 +61,13 @@ public class TbTask  implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "publisher")
-	public TbUser getTbUser() {
-		return this.tbUser;
+	@JoinColumn(name = "owner")
+	public TbUser getOwner() {
+		return this.owner;
 	}
 
-	public void setTbUser(TbUser tbUser) {
-		this.tbUser = tbUser;
+	public void setOwner(TbUser userId) {
+		this.owner = userId;
 	}
 
 	@Column(name = "name", length = 100)
@@ -99,13 +98,13 @@ public class TbTask  implements java.io.Serializable {
 		this.limitime = limitime;
 	}
 
-	@Column(name = "descrption", length = 65535)
-	public String getDescrption() {
-		return this.descrption;
+	@Column(name = "description", length = 65535)
+	public String getDescription() {
+		return this.description;
 	}
 
-	public void setDescrption(String descrption) {
-		this.descrption = descrption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Column(name = "scope")
@@ -115,5 +114,13 @@ public class TbTask  implements java.io.Serializable {
 
 	public void setScope(Integer scope) {
 		this.scope = scope;
+	}
+	@Column(name = "publisher")
+	public Integer getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(Integer publisher) {
+		this.publisher = publisher;
 	}
 }

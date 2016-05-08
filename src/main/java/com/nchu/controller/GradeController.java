@@ -1,5 +1,7 @@
 package com.nchu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nchu.hibnernate.support.Page;
 import com.nchu.model.TbGrade;
-import com.nchu.model.TbRole;
 import com.nchu.service.BaseService;
 import com.nchu.web.support.MessageBean;
 import com.nuhu.constant.APPConstant;
@@ -57,15 +58,12 @@ public class GradeController {
 
     @RequestMapping("/admin/grade/page")
     @ResponseBody
-    public Page<TbGrade> page(Page<TbGrade> gradePage) {
+    public List<TbGrade> page(TbGrade grade) {
 
         try {
-            return baseService.page(gradePage);
+            return baseService.loadAll(grade);
         } catch (Exception e) {
-            Page<TbGrade> page = new Page<TbGrade>();
-            page.setCode(APPConstant.ERROR);
-            page.setMessage("服务器忙");
-            return page;
+            return null;
         }
     }
 

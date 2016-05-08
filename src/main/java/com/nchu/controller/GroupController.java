@@ -1,5 +1,7 @@
 package com.nchu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,15 +56,12 @@ public class GroupController {
 
     @RequestMapping("/admin/group/page")
     @ResponseBody
-    public Page<TbGroup> page(Page<TbGroup> groupPage) {
+    public List<TbGroup> page(TbGroup groupPage) {
 
         try {
-            return baseService.page(groupPage);
+            return baseService.loadAll(groupPage);
         } catch (Exception e) {
-            Page<TbGroup> page = new Page<TbGroup>();
-            page.setCode(APPConstant.ERROR);
-            page.setMessage("服务器忙");
-            return page;
+            return null;
         }
     }
 

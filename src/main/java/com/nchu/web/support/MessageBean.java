@@ -14,6 +14,10 @@ public class MessageBean {
 	private String message;
 	
 	
+	
+	public MessageBean() {
+		super();
+	}
 	public MessageBean(Integer code, String message) {
 		super();
 		this.code = code;

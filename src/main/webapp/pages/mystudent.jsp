@@ -83,7 +83,7 @@
 							<a href="javascript:void(0)">毕设管理系统</a>
 						</li>
 						<li>
-							<a href="javascript:void(0)">课题管理</a>
+							<a href="javascript:void(0)">我的学生</a>
 						</li>
 					</ul>
 					<jsp:include page="../WebPart/SearchBox.jsp"></jsp:include>
@@ -94,25 +94,15 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<!-- PAGE CONTENT BEGINS -->
-							<h3 class="header smaller lighter blue">所有课题</h3>
+							<h3 class="header smaller lighter blue">我的学生</h3>
 
-							<div class="table-header">课题列表</div><th>
-											<p class="text-center">
-												<a class="blue buttongoods" href="javascript:void(0)"
-													id="buttonadd" oper="add"> <i
-													class="fa fa-plus-square-o bigger-150"><strong>添加课题</strong>
-												</i> </a>
-											</p>
+							<div class="table-header">学生列表</div><th>
 										</th>
 							<table id="sample-table-2" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>课题编号</th>
-										<th>课题名称</th>
-										<th>详情</th>
-										<th>截止时间</th>
-										<th>学生</th>
-										<th class="center">操作</th>
+										<th>学生姓名</th>
+										<th>学号</th>
 									</tr>
 								</thead>
 
@@ -122,67 +112,11 @@
 							</table>
 							<!-- PAGE CONTENT ENDS -->
 						</div>
-							<div class="modal fade" role="dialog" id="dialogshow">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">添加课题</h4>
-					</div>
-					<div class="modal-body">
-						<div class="container-fluid">
-							<!-- PAGE CONTENT BEGINS -->
-									<form id="taskInfo">
-										<input name="id" type="hidden" id="input_task_id">
-									<!-- 课题名称 -->
-									<div class="div form-group col-md-12">
-										<label for="form-field-2" class="col-sm-2 control-label no-padding-right">课题名称:</label>
-										<div class="col-sm-10">
-											<input id="input_task_name" type="text" name="name" placeholder="课题名称" class="form-control col-xs-10 col-md-8" />
-										</div>
-									</div>
-									<!-- 课题地址 -->
-									<div class="space-6"></div>
-									<div class="div form-group col-md-12">
-										<label for="form-field-3" class="col-md-2 control-label no-padding-right">课题详情:</label>
-										<div class="col-md-10">
-											<textarea class="form-control col-xs-10 col-md-8" id="input_task_description" name="description" placeholder="课题详情"></textarea>
-										</div>
-									</div>
-									<div class="div form-group col-md-12">
-										<div class="space-6"></div>
-										<label for="form-field-8" class="col-md-2 control-label no-padding-right date-picker">截止时间:</label>
-										<div class="col-md-10 input-icon input-icon-right">
-											<input id="datepicker" name="limitime" type="text" class="a form-control date-picker" placeholder="截止时间" />
-										</div>
-									</div>
-									
-								<div >
-									<div class="space-12"></div>
-									<div style="margin-left:100px;margin-top:20px;">
-										<button  id="taskSave" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
-											添加
-										</button>
-										<button id="communityReset" style="margin-left:25px" class="btn btn-success col-md-3" type="reset">
-											重置
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<input type="hidden" id="currentId" value="${sessionScope.user.id} }">
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
@@ -203,7 +137,8 @@
 		function load(){
 			$.ajax({
 				type:'get',
-				url:"${pageContext.request.contextPath }/admin/task/page",
+				url:"${pageContext.request.contextPath }/admin/user/page",
+				data:{teacher:$("#currenId").val()},
 				success:function(data){
 					debugger;
 					var content=$("#tbbody");
@@ -211,81 +146,14 @@
 					if(data!=null&&data.length>0){
 						
 						for(var i=0;i<data.length;i++){
-							var stu=data[i].owner;
 							item+="<tr>"
-							+"<td>"+data[i].id+"</td>"
 							+"<td>"+data[i].name+"</td>"
-							+"<td>"+data[i].description+"</td>"
-							+"<td>"+data[i].limitime+"</td>";
-							if(stu==null){
-								item+="<td>还未确定</td>";
-							}else{
-								item+="<td>"+stu.name+"</td>"
-							}
-							
-							item+="<td>"
-							+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-							+"<a class=\"green btn_task\" href=\"javascript:void(0)\"" 
-							+"id=\""+data[i].id+"\" name=\""+data[i].name+"\" description=\""+data[i].description+"\""
-							+" limitime=\""+data[i].limitime+"\" oper=\"modify\">"
-							+	"<i class=\"fa fa-pencil bigger-150\">"
-							+		"<small>修改</small>"
-							+	"</i>"
-							+"</a>"
-							+"<a class=\"red btn_task\" id=\""+data[i].id+"\" href=\"javascript:void(0)\" name=\""+data[i].id+"\" oper=\"delete\">"
-							+"<i class=\"fa fa-trash-o bigger-150\">删除</i>"
-							+"</a>"
-						+"</div>"
-							+"</td>"
+							+"<td>"+data[i].code+"</td>"
 						+"</tr>"
 						}
 						content.html("");
 						content.append(item);
 					}
-					$(".btn_task").each(
-							
-						function(){
-							var obj=$(this);
-							obj.click(
-								function(){
-									var oper=obj.attr("oper");
-									
-									if(oper=='delete'){
-										var id=obj.attr("id")
-										$.ajax({
-											type:'get',
-											url:"${pageContext.request.contextPath }/admin/task/deleteAjax",
-											async:false,
-											data:{id:id},
-											success:function(data){
-												if(data.code==1){
-													load();
-												}else{
-													alert(data.message);
-												}
-											}
-										});
-									}else if(oper=='modify'){
-										debugger;
-										var time=obj.attr("limitime");
-										var strs=time.split("-");
-										time=strs[1]+"/"+strs[2]+"/"+strs[0];
-										$("#input_task_id").val(obj.attr("id"));
-										$("#input_task_name").val(obj.attr("name"));
-										$("#input_task_description").html(obj.attr("description"));
-										$("#datepicker").val(time);
-										$("#taskSave").html("修改");
-										$('#dialogshow').modal({
-											keyboard : true,
-											backdrop : true,
-											show : true,
-											remote : false,
-										});
-									}
-								}		
-							);
-						}		
-					);
 				}
 			});
 		}
@@ -297,7 +165,7 @@
 		});
 		var oTable1 = $('#sample-table-2').dataTable( {
 		"aoColumns": [
-	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false},{"bSortable" : false},{"bSortable" : false}
+	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}
 		] } );
 		
 		
@@ -353,7 +221,6 @@
 					url:url,
 					data: $("#taskInfo").serializeArray(),
 					success:function(data){
-						debugger;
 						if(data.code==1){
 							$('#dialogshow').modal('hide');
 							load();

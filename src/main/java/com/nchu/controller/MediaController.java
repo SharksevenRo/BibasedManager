@@ -1,5 +1,7 @@
 package com.nchu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,15 +59,12 @@ public class MediaController {
 
     @RequestMapping("/admin/meadia/page")
     @ResponseBody
-    public Page<TbMedia> page(Page<TbMedia> meadiaPage) {
+    public List<TbMedia> page(TbMedia meadiaPage) {
 
         try {
-            return baseService.page(meadiaPage);
+            return baseService.loadAll(meadiaPage);
         } catch (Exception e) {
-            Page<TbMedia> page = new Page<TbMedia>();
-            page.setCode(APPConstant.ERROR);
-            page.setMessage("服务器忙");
-            return page;
+           return null;
         }
     }
 

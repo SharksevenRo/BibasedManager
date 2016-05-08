@@ -1,5 +1,7 @@
 package com.nchu.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,15 +56,12 @@ public class MessageController {
 
     @RequestMapping("/admin/message/page")
     @ResponseBody
-    public Page<TbMessage> page(Page<TbMessage> messagePage) {
+    public List<TbMessage> page(TbMessage messagePage) {
 
         try {
-            return baseService.page(messagePage);
+            return baseService.loadAll(messagePage);
         } catch (Exception e) {
-            Page<TbMessage> page = new Page<TbMessage>();
-            page.setCode(APPConstant.ERROR);
-            page.setMessage("服务器忙");
-            return page;
+           return null;
         }
     }
 

@@ -29,20 +29,7 @@ public class TbUser  implements java.io.Serializable {
 	private String code;
 	private String phone;
 	private String password;
-	private Set<TbNotice> tbNotices = new HashSet<TbNotice>(0);
-	private Set<TbGrade> tbGradesForUserid = new HashSet<TbGrade>(0);
-	private Set<TbGroup> tbGroups = new HashSet<TbGroup>(0);
-	private Set<TbMessage> tbMessages = new HashSet<TbMessage>(0);
-	private Set<TbMessageRead> tbMessageReadsForUserId = new HashSet<TbMessageRead>(
-			0);
-	private Set<TbMessageRead> tbMessageReadsForUserid = new HashSet<TbMessageRead>(
-			0);
-	private Set<TbGrade> tbGradesForUserId = new HashSet<TbGrade>(0);
-	private Set<TbNoticeRead> tbNoticeReadsForUserId = new HashSet<TbNoticeRead>(
-			0);
-	private Set<TbNoticeRead> tbNoticeReadsForUserid = new HashSet<TbNoticeRead>(
-			0);
-	private Set<TbTask> tbTasks = new HashSet<TbTask>(0);
+	private Integer teacher;
 
 	// Constructors
 
@@ -58,29 +45,12 @@ public class TbUser  implements java.io.Serializable {
 
 	/** full constructor */
 	public TbUser(Integer roleId, String name,
-			String code, String phone, String password,
-			Set<TbNotice> tbNotices, Set<TbGrade> tbGradesForUserid,
-			Set<TbGroup> tbGroups, Set<TbMessage> tbMessages,
-			Set<TbMessageRead> tbMessageReadsForUserId,
-			Set<TbMessageRead> tbMessageReadsForUserid,
-			Set<TbGrade> tbGradesForUserId,
-			Set<TbNoticeRead> tbNoticeReadsForUserId,
-			Set<TbNoticeRead> tbNoticeReadsForUserid, Set<TbTask> tbTasks) {
+			String code, String phone, String password) {
 		this.roleId = roleId;
 		this.name = name;
 		this.code = code;
 		this.phone = phone;
 		this.password = password;
-		this.tbNotices = tbNotices;
-		this.tbGradesForUserid = tbGradesForUserid;
-		this.tbGroups = tbGroups;
-		this.tbMessages = tbMessages;
-		this.tbMessageReadsForUserId = tbMessageReadsForUserId;
-		this.tbMessageReadsForUserid = tbMessageReadsForUserid;
-		this.tbGradesForUserId = tbGradesForUserId;
-		this.tbNoticeReadsForUserId = tbNoticeReadsForUserId;
-		this.tbNoticeReadsForUserid = tbNoticeReadsForUserid;
-		this.tbTasks = tbTasks;
 	}
 
 	// Property accessors
@@ -141,98 +111,13 @@ public class TbUser  implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUser")
-	public Set<TbNotice> getTbNotices() {
-		return this.tbNotices;
+	public Integer getTeacher() {
+		return teacher;
 	}
-
-	public void setTbNotices(Set<TbNotice> tbNotices) {
-		this.tbNotices = tbNotices;
+	@Column(name = "teacher")
+	public void setTeacher(Integer teacher) {
+		this.teacher = teacher;
 	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUserByUserid")
-	public Set<TbGrade> getTbGradesForUserid() {
-		return this.tbGradesForUserid;
-	}
-
-	public void setTbGradesForUserid(Set<TbGrade> tbGradesForUserid) {
-		this.tbGradesForUserid = tbGradesForUserid;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUser")
-	public Set<TbGroup> getTbGroups() {
-		return this.tbGroups;
-	}
-
-	public void setTbGroups(Set<TbGroup> tbGroups) {
-		this.tbGroups = tbGroups;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUser")
-	public Set<TbMessage> getTbMessages() {
-		return this.tbMessages;
-	}
-
-	public void setTbMessages(Set<TbMessage> tbMessages) {
-		this.tbMessages = tbMessages;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUserByUserId")
-	public Set<TbMessageRead> getTbMessageReadsForUserId() {
-		return this.tbMessageReadsForUserId;
-	}
-
-	public void setTbMessageReadsForUserId(
-			Set<TbMessageRead> tbMessageReadsForUserId) {
-		this.tbMessageReadsForUserId = tbMessageReadsForUserId;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUserByUserid")
-	public Set<TbMessageRead> getTbMessageReadsForUserid() {
-		return this.tbMessageReadsForUserid;
-	}
-
-	public void setTbMessageReadsForUserid(
-			Set<TbMessageRead> tbMessageReadsForUserid) {
-		this.tbMessageReadsForUserid = tbMessageReadsForUserid;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUserByUserId")
-	public Set<TbGrade> getTbGradesForUserId() {
-		return this.tbGradesForUserId;
-	}
-
-	public void setTbGradesForUserId(Set<TbGrade> tbGradesForUserId) {
-		this.tbGradesForUserId = tbGradesForUserId;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUserByUserId")
-	public Set<TbNoticeRead> getTbNoticeReadsForUserId() {
-		return this.tbNoticeReadsForUserId;
-	}
-
-	public void setTbNoticeReadsForUserId(
-			Set<TbNoticeRead> tbNoticeReadsForUserId) {
-		this.tbNoticeReadsForUserId = tbNoticeReadsForUserId;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUserByUserid")
-	public Set<TbNoticeRead> getTbNoticeReadsForUserid() {
-		return this.tbNoticeReadsForUserid;
-	}
-
-	public void setTbNoticeReadsForUserid(
-			Set<TbNoticeRead> tbNoticeReadsForUserid) {
-		this.tbNoticeReadsForUserid = tbNoticeReadsForUserid;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbUser")
-	public Set<TbTask> getTbTasks() {
-		return this.tbTasks;
-	}
-
-	public void setTbTasks(Set<TbTask> tbTasks) {
-		this.tbTasks = tbTasks;
-	}
-
+	
+	
 }
