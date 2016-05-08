@@ -221,6 +221,7 @@ public class BasicHibernateDao<T,PK extends Serializable> {
 			update(entity);
 		} else {
 			getSession().delete(entity);
+			this.flush();
 		}
 		
 	}

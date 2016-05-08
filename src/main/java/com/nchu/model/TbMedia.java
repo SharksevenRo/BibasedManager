@@ -1,10 +1,14 @@
 package com.nchu.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -17,11 +21,13 @@ public class TbMedia implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private Integer owner;
-	private Integer receiver;
+	private TbUser owner;
+	private TbUser receiver;
 	private Short status;
 	private String url;
 	private Integer type;
+	private String name;
+	private Integer score;
 
 	// Constructors
 
@@ -36,7 +42,7 @@ public class TbMedia implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbMedia(Integer owner, Integer receiver, Short status, String url,
+	public TbMedia(TbUser owner, TbUser receiver, Short status, String url,
 			Integer type) {
 		this.owner = owner;
 		this.receiver = receiver;
@@ -57,21 +63,23 @@ public class TbMedia implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "owner")
-	public Integer getOwner() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner")
+	public TbUser getOwner() {
 		return this.owner;
 	}
 
-	public void setOwner(Integer owner) {
+	public void setOwner(TbUser owner) {
 		this.owner = owner;
 	}
 
-	@Column(name = "receiver")
-	public Integer getReceiver() {
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "receiver")
+	public TbUser getReceiver() {
 		return this.receiver;
 	}
 
-	public void setReceiver(Integer receiver) {
+	public void setReceiver(TbUser receiver) {
 		this.receiver = receiver;
 	}
 
@@ -93,7 +101,7 @@ public class TbMedia implements java.io.Serializable {
 		this.url = url;
 	}
 
-	@Column(name = "type", nullable = false)
+	@Column(name = "type")
 	public Integer getType() {
 		return this.type;
 	}
@@ -101,5 +109,20 @@ public class TbMedia implements java.io.Serializable {
 	public void setType(Integer type) {
 		this.type = type;
 	}
+	@Column(name = "name")
+	public String getName() {
+		return name;
+	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Column(name = "score")
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
 }

@@ -83,7 +83,7 @@ public class TaskController {
         try {
             task = baseService.getOne(task.getClass(), task.getId());
             baseService.delete(task);
-            return new MessageBean(APPConstant.ERROR, "删除成功");
+            return new MessageBean(APPConstant.SUCCESS, "删除成功");
         } catch (Exception e) {
             e.printStackTrace();
             return new MessageBean(APPConstant.ERROR, "删除失败");

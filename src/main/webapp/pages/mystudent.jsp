@@ -116,7 +116,7 @@
 				</div>
 			</div>
 		</div>
-		<input type="hidden" id="currentId" value="${sessionScope.user.id} }">
+		<input type="hidden" id="currentId" value="${sessionScope.user.id}">
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
@@ -135,10 +135,11 @@
 		
 		//获取数据
 		function load(){
+			debugger;
 			$.ajax({
 				type:'get',
 				url:"${pageContext.request.contextPath }/admin/user/page",
-				data:{teacher:$("#currenId").val()},
+				data:{teacher:$("#currentId").val()},
 				success:function(data){
 					debugger;
 					var content=$("#tbbody");

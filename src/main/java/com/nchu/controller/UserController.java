@@ -1,5 +1,9 @@
 package com.nchu.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("roleFunctionService")
 	private RoleFunctionService<TbRoleFunction> roleFunctionService;
+	private String path;
+	private static int bufSize = 512; // size of bytes
+	private byte[] buf;
+	private int readedBytes;
 
 	@RequestMapping("/user/register")
 	public void register(Model model, HttpServletRequest request, HttpServletResponse response, TbUser user) {
@@ -125,54 +133,47 @@ public class UserController {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 选择课题
+	 * 
 	 * @param choose
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping("/stduent/chooseAjax")
 	@ResponseBody
-	public MessageBean chooseTask(TbChoose choose,HttpServletRequest request){
-		
-		
-		TbUser user=(TbUser) request.getSession().getAttribute("user");
-		TbChoose temp=new TbChoose();
+	public MessageBean chooseTask(TbChoose choose, HttpServletRequest request) {
+
+		TbUser user = (TbUser) request.getSession().getAttribute("user");
+		TbChoose temp = new TbChoose();
 		temp.setStudentId(user.getId());
-		if(chooseService.loadAll(temp).size()==1){
-			return new MessageBean(APPConstant.ERROR,"你已经选择了该课题");
-		}else{
+		if (chooseService.loadAll(temp).size() == 1) {
+			return new MessageBean(APPConstant.ERROR, "你已经选择了该课题");
+		} else {
 			choose.setStudentId(user.getId());
-			temp=new TbChoose();
+			temp = new TbChoose();
 			temp.setStudentId(user.getId());
-			if(chooseService.loadAll(temp).size()>2){
-				return new MessageBean(APPConstant.ERROR,"你已经选了两个课题");
-			}else{
+			if (chooseService.loadAll(temp).size() > 2) {
+				return new MessageBean(APPConstant.ERROR, "你已经选了两个课题");
+			} else {
 				chooseService.save(choose);
-				return new MessageBean(APPConstant.SUCCESS,"选择成功");
+				return new MessageBean(APPConstant.SUCCESS, "选择成功");
 			}
 		}
 	}
-	
-	
+
 	@RequestMapping("/stduent/chooseTeacher")
 	@ResponseBody
-	public MessageBean chooseTask(TbUser teacher,HttpServletRequest request){
-		
-		
-		TbUser user=(TbUser) request.getSession().getAttribute("user");
-		if(user.getTeacher()!=null){
-			return new MessageBean(APPConstant.ERROR,"你已经选择了毕设老师，不能重复选择");
-		}else{
+	public MessageBean chooseTask(TbUser teacher, HttpServletRequest request) {
+
+		TbUser user = (TbUser) request.getSession().getAttribute("user");
+		if (user.getTeacher() != null) {
+			return new MessageBean(APPConstant.ERROR, "你已经选择了毕设老师，不能重复选择");
+		} else {
 			user.setTeacher(teacher.getId());
 			baseService.update(user);
-			return new MessageBean(APPConstant.SUCCESS,"选择成功，可以前往去查看和选择课题");
+			return new MessageBean(APPConstant.SUCCESS, "选择成功，可以前往去查看和选择课题");
 		}
-	}
-	
-	public MessageBean uploadDocs(MultipartFile file,HttpServletRequest request){
-		
-		return null;
 	}
 }

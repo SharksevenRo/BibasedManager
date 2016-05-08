@@ -177,7 +177,7 @@
 						{
 							paramName : "file", // The name that will be used to transfer the file
 							maxFilesize : 1024, // MB
-							url : "${pageContext.request.contextPath}/excel/upload?expect=ignore",
+							url : "${pageContext.request.contextPath}/admin/meadia/upload",
 							addRemoveLinks : true,
 							dictDefaultMessage : '<span class="bigger-150 bolder"><i class="ace-icon fa fa-caret-right red"></i> 拖拽文件</span> 上传 \
 				<span class="smaller-80 grey">(或点我)</span> <br /> \

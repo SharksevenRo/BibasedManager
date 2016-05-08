@@ -259,6 +259,7 @@
 											data:{id:id},
 											success:function(data){
 												if(data.code==1){
+													debugger;
 													load();
 												}else{
 													alert(data.message);
