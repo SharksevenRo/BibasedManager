@@ -41,6 +41,7 @@ import com.nchu.hibnernate.support.PageRequest.Sort;
 import com.nchu.util.CollectionUtils;
 import com.nchu.util.ReflectionUtils;
 
+
 /**
  * {@link BasicHibernateDao}基础扩展类。包含对{@link PropertyFilter}的支持。或其他查询的支持
  * 
@@ -54,6 +55,7 @@ import com.nchu.util.ReflectionUtils;
 public class HibernateSupportDao<T,PK extends Serializable> extends BasicHibernateDao<T, PK>{
 
 	public HibernateSupportDao(){
+
 	}
 
 	public HibernateSupportDao(Class<T> entityClass){
@@ -439,7 +441,7 @@ public class HibernateSupportDao<T,PK extends Serializable> extends BasicHiberna
 	 * @return
 	 */
 	public <T> List<T> getEntitiestNotLazy(T t, String[] fields,
-			SimpleExpression[] eqs) {
+			Criterion[] eqs) {
 
 		try {
 			Criteria criteria = getSession().createCriteria(t.getClass());
@@ -451,7 +453,33 @@ public class HibernateSupportDao<T,PK extends Serializable> extends BasicHiberna
 			}
 			if (eqs != null) {
 
-				for (SimpleExpression eq : eqs) {
+				for (Criterion eq : eqs) {
+					criteria.add(eq);
+				}
+			}
+			return criteria.list();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public <T> List<T> getEntitiestNotLazyWithOrder(T t, String[] fields,
+			Criterion[] eqs,Order order) {
+
+		try {
+			Criteria criteria = getSession().createCriteria(t.getClass());
+
+			if(order!=null){
+				criteria.addOrder(order);
+			}
+			if (fields != null) {
+				for (String string : fields) {
+					criteria = criteria.setFetchMode(string, org.hibernate.FetchMode.JOIN);
+				}
+			}
+			if (eqs != null) {
+
+				for (Criterion eq : eqs) {
 					criteria.add(eq);
 				}
 			}

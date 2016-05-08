@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
  * TbScopeId entity. @author MyEclipse Persistence Tools
  */
 @Embeddable
-public class TbScopeId implements java.io.Serializable {
+public class TbScopeId  implements java.io.Serializable {
 
 	// Fields
 

@@ -46,7 +46,7 @@
 		<c:forEach items="${sessionScope.menus}" var="menu">
 		<c:if test="${menu.child!=null }">
 			<li id="dashboard" class="">
-			<a href="${menu.functionUrl }" class="dropdown-toggle">
+			<a href="<%=basePath %>${menu.functionUrl }" class="dropdown-toggle">
 				<i class="menu-icon fa fa-tachometer"></i>
 				<span class="menu-text">${menu.name }</span>
 				<b class="arrow"></b>
@@ -56,7 +56,7 @@
 				<ul class="submenu">
 					<c:forEach items="${menu.child}" var="child">
 						<li name="menu11" class="">
-						<a href="${child.functionUrl }">
+						<a href="<%=basePath %>${child.functionUrl }">
 							<i class="menu-icon fa fa-caret-right"></i>${child.name }
 						 </a>
 						</li>

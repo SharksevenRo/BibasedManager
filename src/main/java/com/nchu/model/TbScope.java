@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tb_scope", catalog = "bibased")
-public class TbScope implements java.io.Serializable {
+public class TbScope  implements java.io.Serializable {
 
 	// Fields
 

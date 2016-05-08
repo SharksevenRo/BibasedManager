@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tb_user", catalog = "bibased")
-public class TbUser implements java.io.Serializable {
+public class TbUser  implements java.io.Serializable {
 
 	// Fields
 

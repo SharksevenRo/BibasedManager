@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tb_message", catalog = "bibased")
-public class TbMessage implements java.io.Serializable {
+public class TbMessage  implements java.io.Serializable {
 
 	// Fields
 

@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.nchu.hibnernate.support.Page;
+
 /**
  * TbGrade entity. @author MyEclipse Persistence Tools
  */

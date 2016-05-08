@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,17 +31,21 @@ public class UserController {
 	private RoleFunctionService<TbRoleFunction> roleFunctionService;
 
 	@RequestMapping("/user/register")
-	public String register(HttpServletRequest request,TbUser user) {
+	public void register(Model model,HttpServletRequest request,HttpServletResponse response,TbUser user) {
 
 		try {
+			TbUser temp=new TbUser();
+			temp.setCode(user.getCode());
+			if(baseService.loadAll(temp).size()>1){
+				model.addAttribute("errors", "该学号已经注册");
+				request.getRequestDispatcher("/login.jsp").forward(request, response);
+			}
 			user.setPassword(Md5.GetMD5Code(user.getPassword()));
-			user.setRoleId(1);
 			baseService.save(user);
 			loadAll(request, user);
-			return "/index.jsp";
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/erro/404.html";
 		}
 
 	}

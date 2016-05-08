@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tb_role_function", catalog = "bibased")
-public class TbRoleFunction implements java.io.Serializable {
+public class TbRoleFunction  implements java.io.Serializable {
 
 	// Fields
 

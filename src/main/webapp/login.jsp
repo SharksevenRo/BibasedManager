@@ -187,6 +187,16 @@
 															<i class="ace-icon fa fa-retweet"></i>
 															</span>
 														</label>
+													<div class="control-group">
+														<input name="roleId" type="radio" class="ace" value="1"/>
+														<span class="lbl"> 学生 </span>
+														<input name="roleId" type="radio" class="ace" value="2"/>
+														<span class="lbl"> 管理员</span>
+														<input name="roleId" type="radio" class="ace" value="3"/>
+														<span class="lbl"> 老师</span>
+														<input name="roleId" type="radio" class="ace" value="4"/>
+														<span class="lbl"> 辅导员</span>
+													</div>
 													<div class="space-24"></div>
 													<div class="clearfix">
 														<button type="reset" class="width-45 pull-left btn btn-sm btn-info">

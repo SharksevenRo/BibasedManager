@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "tb_task", catalog = "bibased")
-public class TbTask implements java.io.Serializable {
+public class TbTask  implements java.io.Serializable {
 
 	// Fields
 
@@ -116,14 +116,4 @@ public class TbTask implements java.io.Serializable {
 	public void setScope(Integer scope) {
 		this.scope = scope;
 	}
-
-	@Column(name = "parent_id")
-	public Integer getParentId() {
-		return this.parentId;
-	}
-
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
-
 }

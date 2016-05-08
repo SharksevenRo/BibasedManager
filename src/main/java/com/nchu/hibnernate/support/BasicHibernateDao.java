@@ -290,7 +290,13 @@ public class BasicHibernateDao<T,PK extends Serializable> {
 		
 		return (T) getSession().load(entityClass, id);
 	}
-
+	public T get(Class clazz,PK id) {
+		if (id == null) {
+			return null;
+		}
+		
+		return (T) getSession().get(clazz, id);
+	}
 	/**
 	 * 按PK列表获取对象列表.
 	 * 
