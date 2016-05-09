@@ -1,19 +1,23 @@
 package com.nchu.model;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.nchu.web.support.CustomDateSerializer;
 
 /**
  * TbNotice entity. @author MyEclipse Persistence Tools
@@ -25,18 +29,15 @@ public class TbNotice  implements java.io.Serializable {
 	// Fields
 
 	private Integer id;
-	private TbUser tbUser;
+	private TbUser sender;
 	private String title;
 	private String content;
-	private Timestamp time;
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private Date time;
 	private Short stuvisible;
 	private Short teavisible;
 	private Integer scope;
-	private Short type;
-	private Set<TbNoticeRead> tbNoticeReadsForNoticeid = new HashSet<TbNoticeRead>(
-			0);
-	private Set<TbNoticeRead> tbNoticeReadsForNoticeId = new HashSet<TbNoticeRead>(
-			0);
+	private TbUser receiver;
 
 	// Constructors
 
@@ -50,20 +51,17 @@ public class TbNotice  implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TbNotice(TbUser tbUser, String title, String content,
+	public TbNotice(TbUser sender, String title, String content,
 			Timestamp time, Short stuvisible, Short teavisible, Integer scope,
-			Short type, Set<TbNoticeRead> tbNoticeReadsForNoticeid,
-			Set<TbNoticeRead> tbNoticeReadsForNoticeId) {
-		this.tbUser = tbUser;
+			TbUser type) {
+		this.sender = sender;
 		this.title = title;
 		this.content = content;
 		this.time = time;
 		this.stuvisible = stuvisible;
 		this.teavisible = teavisible;
 		this.scope = scope;
-		this.type = type;
-		this.tbNoticeReadsForNoticeid = tbNoticeReadsForNoticeid;
-		this.tbNoticeReadsForNoticeId = tbNoticeReadsForNoticeId;
+		this.receiver = type;
 	}
 
 	// Property accessors
@@ -80,12 +78,12 @@ public class TbNotice  implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sender")
-	public TbUser getTbUser() {
-		return this.tbUser;
+	public TbUser getSender() {
+		return this.sender;
 	}
 
-	public void setTbUser(TbUser tbUser) {
-		this.tbUser = tbUser;
+	public void setSender(TbUser sender) {
+		this.sender = sender;
 	}
 
 	@Column(name = "title", length = 65535)
@@ -106,12 +104,13 @@ public class TbNotice  implements java.io.Serializable {
 		this.content = content;
 	}
 
-	@Column(name = "time", nullable = false, length = 19)
-	public Timestamp getTime() {
+	@Column(name = "time", length = 19)
+	@JsonSerialize(using = CustomDateSerializer.class)
+	public Date getTime() {
 		return this.time;
 	}
 
-	public void setTime(Timestamp time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 
@@ -142,33 +141,13 @@ public class TbNotice  implements java.io.Serializable {
 		this.scope = scope;
 	}
 
-	@Column(name = "type")
-	public Short getType() {
-		return this.type;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "receiver")
+	public TbUser getReceiver() {
+		return this.receiver;
 	}
 
-	public void setType(Short type) {
-		this.type = type;
+	public void setReceiver(TbUser type) {
+		this.receiver = type;
 	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbNoticeByNoticeid")
-	public Set<TbNoticeRead> getTbNoticeReadsForNoticeid() {
-		return this.tbNoticeReadsForNoticeid;
-	}
-
-	public void setTbNoticeReadsForNoticeid(
-			Set<TbNoticeRead> tbNoticeReadsForNoticeid) {
-		this.tbNoticeReadsForNoticeid = tbNoticeReadsForNoticeid;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "tbNoticeByNoticeId")
-	public Set<TbNoticeRead> getTbNoticeReadsForNoticeId() {
-		return this.tbNoticeReadsForNoticeId;
-	}
-
-	public void setTbNoticeReadsForNoticeId(
-			Set<TbNoticeRead> tbNoticeReadsForNoticeId) {
-		this.tbNoticeReadsForNoticeId = tbNoticeReadsForNoticeId;
-	}
-
 }

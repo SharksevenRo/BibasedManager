@@ -33,6 +33,10 @@
 				</small>
 			</a>
 		</div>
+		<div class="navbar-header pull-right">
+			<!-- #section:basics/navbar.layout.brand -->
+			<button id="logout" class="btn btn-danger btn-block">退出登录</button>
+		</div>
 
 		<!-- #section:basics/navbar.dropdown -->
 
@@ -72,7 +76,12 @@
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script type="text/javascript">
-    
+    $("#logout").click(
+    	function(){
+    		
+    		window.location.href="${pageContext.request.contextPath}/admin/user/logout";
+    	}		
+    );
 </script>
     
     
