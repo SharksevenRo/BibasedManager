@@ -105,7 +105,7 @@
 												</i> </a>
 											</p>
 										</th>
-							<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>通知标题</th>

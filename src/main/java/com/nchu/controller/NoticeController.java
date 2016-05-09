@@ -20,68 +20,70 @@ public class NoticeController {
 	@Autowired
 	private NoticeService baseService;
 
-    @RequestMapping("/admin/notice/saveAjax")
-    @ResponseBody
-    public MessageBean saveAjax(TbNotice notice,HttpServletRequest request) {
-    	TbUser user = (TbUser) request.getSession().getAttribute("user");
-        try {
-        	
-        	if(notice.getReceiver().getId()==user.getId()){
-        		notice.setTeavisible((short) 1);
-        	}
-            baseService.save(notice);
-            return new MessageBean(APPConstant.SUCCESS, "发布成功");
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return new MessageBean(APPConstant.ERROR, "发布失败");
-        }
-    }
+	@RequestMapping("/admin/notice/saveAjax")
+	@ResponseBody
+	public MessageBean saveAjax(TbNotice notice, HttpServletRequest request) {
+		TbUser user = (TbUser) request.getSession().getAttribute("user");
+		try {
+			if (notice.getStuvisible() == null||notice.getStuvisible() == 0) {
+				if (notice.getReceiver().getId().equals(user.getId())) {
+					notice.setTeavisible((short) 1);
+				}
+			}
 
-    @RequestMapping("/admin/notice/updateAjax")
-    @ResponseBody
-    public MessageBean updateAjax(TbNotice notice) {
+			baseService.save(notice);
+			return new MessageBean(APPConstant.SUCCESS, "发布成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new MessageBean(APPConstant.ERROR, "发布失败");
+		}
+	}
 
-        try {
-            baseService.update(notice);
-            return new MessageBean(APPConstant.SUCCESS, "上传成功");
-        } catch (Exception e) {
-            return new MessageBean(APPConstant.SUCCESS, "上传失败");
-        }
-    }
+	@RequestMapping("/admin/notice/updateAjax")
+	@ResponseBody
+	public MessageBean updateAjax(TbNotice notice) {
 
-    @RequestMapping("/admin/notice/deleteAjax")
-    @ResponseBody
-    public MessageBean deleteAjax(TbNotice notice) {
+		try {
+			baseService.update(notice);
+			return new MessageBean(APPConstant.SUCCESS, "上传成功");
+		} catch (Exception e) {
+			return new MessageBean(APPConstant.SUCCESS, "上传失败");
+		}
+	}
 
-        try {
-            notice = baseService.getOne(notice.getClass(), notice.getId());
-            baseService.delete(notice);
-            return new MessageBean(APPConstant.ERROR, "删除成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new MessageBean(APPConstant.ERROR, "删除失败");
-        }
-    }
+	@RequestMapping("/admin/notice/deleteAjax")
+	@ResponseBody
+	public MessageBean deleteAjax(TbNotice notice) {
 
-    @RequestMapping("/admin/notice/page")
-    @ResponseBody
-    public List<TbNotice> page(TbNotice notice) {
+		try {
+			notice = baseService.getOne(notice.getClass(), notice.getId());
+			baseService.delete(notice);
+			return new MessageBean(APPConstant.ERROR, "删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new MessageBean(APPConstant.ERROR, "删除失败");
+		}
+	}
 
-        try {
-            return baseService.getAll(notice);
-        } catch (Exception e) {
-            return null;
-        }
-    }
+	@RequestMapping("/admin/notice/page")
+	@ResponseBody
+	public List<TbNotice> page(TbNotice notice) {
 
-    @RequestMapping(value = "/admin/notice/getOneAjax")
-    @ResponseBody
-    public TbNotice getOne(TbNotice notice) {
-        try {
-        	
-            return baseService.getOne(notice.getClass(), notice.getId());
-        } catch (Exception e) {
-            return null;
-        }
-    }
+		try {
+			return baseService.getAll(notice);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@RequestMapping(value = "/admin/notice/getOneAjax")
+	@ResponseBody
+	public TbNotice getOne(TbNotice notice) {
+		try {
+
+			return baseService.getOne(notice.getClass(), notice.getId());
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

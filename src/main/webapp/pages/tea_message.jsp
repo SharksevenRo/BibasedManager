@@ -105,13 +105,12 @@
 												</i> </a>
 											</p>
 										</th>
-							<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>通知标题</th>
 										<th>发布时间</th>
 										<th>发布者</th>
-										<th>接受对象</th>
 									</tr>
 								</thead>
 
@@ -148,6 +147,7 @@
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
+		<input id="currentId" type="hidden" value="${sessionScope.user.id }">
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
@@ -183,13 +183,7 @@
 							item+="<tr>"
 							+"<td><a class=\"read\" id=\""+data[i].content+"\" href=\"javascript:void(0)\">"+data[i].title+"</td>"
 							+"<td>"+data[i].time+"</td>"
-							+"<td>"+sender.name+"</td>";
-							if(data[i].teavisible==1){
-								item+="<td>所有小组</td>";
-							}else{
-								item+="<td>"+teacher.name+"老师小组</td>"
-							}
-							item+="</tr>"
+							+"<td>"+sender.name+"</td>"+"</tr>"
 						}
 						content.html("");
 						content.append(item);
@@ -222,7 +216,7 @@
 		});
 		var oTable1 = $('#sample-table-2').dataTable( {
 		"aoColumns": [
-	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false}
+	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}
 		] } );
 		
 		

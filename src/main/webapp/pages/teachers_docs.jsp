@@ -97,7 +97,7 @@
 							<h3 class="header smaller lighter blue">所有学生上交文档</h3>
 
 							<div class="table-header">学生上交文档列表</div>
-							<table id="sample-table-2" class="table table-striped table-bordered table-hover">
+							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>文档名称</th>
