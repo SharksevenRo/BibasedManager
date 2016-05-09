@@ -2,11 +2,14 @@ package com.nchu.model;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * TbUser entity. @author MyEclipse Persistence Tools
@@ -24,6 +27,8 @@ public class TbUser  implements java.io.Serializable {
 	private String phone;
 	private String password;
 	private Integer teacher;
+	
+	private List<TbTask> tasks;
 
 	// Constructors
 
@@ -111,6 +116,15 @@ public class TbUser  implements java.io.Serializable {
 	@Column(name = "teacher")
 	public void setTeacher(Integer teacher) {
 		this.teacher = teacher;
+	}
+
+	@Transient
+	public List<TbTask> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<TbTask> tasks) {
+		this.tasks = tasks;
 	}
 	
 	

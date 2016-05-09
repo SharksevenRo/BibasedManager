@@ -83,7 +83,7 @@
 							<a href="javascript:void(0)">毕设管理系统</a>
 						</li>
 						<li>
-							<a href="javascript:void(0)">学生提问</a>
+							<a href="javascript:void(0)">通知管理</a>
 						</li>
 					</ul>
 					<jsp:include page="../WebPart/SearchBox.jsp"></jsp:include>
@@ -91,54 +91,42 @@
 				<!-- 主要内容 start -->
 				<div class="page-content">
 					<jsp:include page="../WebPart/Skin.jsp"></jsp:include>
-					<div class="row" style="text-align: center;">
-					<div style="text-align: center;">
-							<a href="#" class="btn btn-app btn-primary no-radius" id="a_question">
-								<i class="fa fa-comments-o bigger-150"></i>
-								提问
-								<span class="badge badge-warning badge-left"></span>
-							</a>
-						</div>
+					<div class="row">
 						<div class="col-xs-12">
-								<div class="dd" id="nestable">
-									<ol class="dd-list" id="question_content">
-										<li class="dd-item" data-id="2">
-											<div class="dd-handle">提问列表</div>
+							<!-- PAGE CONTENT BEGINS -->
+							<h3 class="header smaller lighter blue">所有通知</h3>
 
-											<ol class="dd-list" >
-												<li class="dd-item" data-id="5">
-													<div class="dd-handle">
-														Item 5
-														<div class="pull-right action-buttons">
+							<div class="table-header">通知列表</div>
+							<th>
+											<p class="text-center">
+												<a class="blue buttongoods" href="javascript:void(0)"
+													id="buttonadd" oper="add"> <i
+													class="fa fa-plus-square-o bigger-150"><strong>发布通知</strong>
+												</i> </a>
+											</p>
+										</th>
+							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>通知标题</th>
+										<th>发布时间</th>
+										<th>发布者</th>
+										<th>接受对象</th>
+									</tr>
+								</thead>
 
-															<a class="red" href="#">
-																	回复
-															</a>
-														</div>
-													</div>
-
-												</li>
-												
-
-												<li class="dd-item" data-id="9">
-													<div class="dd-handle btn-yellow no-hover">Item 9</div>
-												</li>
-
-												<li class="dd-item" data-id="10">
-													<div class="dd-handle">Item 10</div>
-												</li>
-											</ol>
-										</li>
-
-									</ol>
-								</div>
-							</div>
+								<tbody id="tbbody">
+									
+								</tbody>
+							</table>
+							<!-- PAGE CONTENT ENDS -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		
-	<div class="modal fade" role="dialog" id="dialogshow">
+		<div class="modal fade" role="dialog" id="content_show">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -146,32 +134,13 @@
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">向老师提问</h4>
+						<h4 class="modal-title" id="gridSystemModalLabel">通知详情</h4>
 					</div>
 					<div class="modal-body">
 						<div class="container-fluid">
 							<!-- PAGE CONTENT BEGINS -->
-									<form id="taskInfo">
-									<input name="sender.id" type="hidden" value="${sessionScope.user.id }">
-									<input name="receiver.id" type="hidden" value="${sessionScope.user.teacher }">
-									<input name="parentId" type="hidden" id="parentId" value="">
-									<div class="space-6"></div>
-									<div class="div form-group col-md-12">
-										<label for="form-field-3" class="col-md-2 control-label no-padding-right">问题:</label>
-										<div class="col-md-10">
-											<textarea class="form-control col-xs-10 col-md-8" id="" name="content" placeholder="问题"></textarea>
-										</div>
-									</div>
-									
-								<div >
-									<div class="space-12"></div>
-									<div style="margin-left:100px;margin-top:20px;">
-										<button  id="questionSave" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
-											提问
-										</button>
-									</div>
-								</div>
-							</form>
+							<p id="description">
+							</p>		
 						</div>
 					</div>
 				</div>
@@ -179,7 +148,7 @@
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
-		<input type="hidden" id="currentId" value="${sessionScope.user.id }"> 
+		<input id="currentId" type="hidden" value="${sessionScope.user.teahcer }">
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
@@ -187,121 +156,101 @@
 	<script src="${pageContext.request.contextPath }/assets/js/jquery.form.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/js/jquery-ui.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/js/jquery.ui.touch-punch.js"></script>
-	<script src="${pageContext.request.contextPath }/assets/js/jquery.nestable.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/jquery.gritter.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/jquery.dataTables.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">
 	jQuery(function($) {
+		
 		//获取数据
 		function load(){
 			debugger;
 			$.ajax({
-				type:'get',
+				type:'post',
 				async:false,
-				data:{'sender.id':$("#currentId").val()},
-				url:"${pageContext.request.contextPath }/admin/message/page",
+				data:{'receiver.id':$("#currentId").val(),teavisible:1},
+				url:"${pageContext.request.contextPath }/admin/notice/page",
 				success:function(data){
 					debugger;
-					var content=$("#question_content");
+					var content=$("#tbbody");
 					var item="";
 					if(data!=null&&data.length>0){
-						for(var i=0;i<data.length;i++){
-							item+="<li class=\"dd-item\" >"
-							+"<div class=\"dd-handle\">"
-							+data[i].sender.name+"说：<font color=\"red\">"+data[i].content+"</font> "+data[i].time
-							+	"<a class=\"blue reply\" id=\""+data[i].id+"\" href=\"#\">"
-							+		"<i class=\"icon-pencil bigger-130\">回复</i>"
-							+	"</a>"
-						+"</div>";
 						
-							var child=data[i].child;
-							if(child!=null&&child.length>0){
-								for(var j=0;j<child.length;j++){
-									item+="<ol class=\"dd-list\">"
-										+"<li class=\"dd-item\" >"
-										+"<div class=\"dd-handle\" style=\"text-align:left\">"
-										+child[j].sender.name+"回复:"+child[j].content+""+child[j].time
-										+"<div class=\"pull-right action-buttons\">"
-										+	"<a class=\"blue reply\" id=\""+child[j].id+"\" href=\"#\">"
-										+	"</a>"
-										+"</div>"
-									+"</div>"
-									+"	</li>"
-									+"</ol>";
-								}
-								
+						for(var i=0;i<data.length;i++){
+							var sender =data[i].sender;
+							item+="<tr>"
+							+"<td><a class=\"read\" id=\""+data[i].content+"\" href=\"javascript:void(0)\">"+data[i].title+"</td>"
+							+"<td>"+data[i].time+"</td>"
+							+"<td>"+sender.name+"</td>";
+							if(data[i].teavisible==1){
+								item+="<td>所有小组</td>";
+							}else{
+								item+="<td>"+teacher.name+"老师小组</td>"
 							}
-							item+="</li>";
+							item+="</tr>"
 						}
 						content.html("");
 						content.append(item);
-						
-						$(".reply").each(
-							function(){
-								var obj=$(this);
-								obj.click(
-									function(){
-										
-										debugger;
-										$("#parentId").val(obj.attr("id"));
-										$("#questionSave").html("回复");
-										$('#dialogshow').modal({
-											keyboard : true,
-											backdrop : true,
-											show : true,
-											remote : false,
-										});
-									}		
-								);
-							}		
-						);
 					}
+					$(".read").each(function(){
+						
+						var obj=$(this);
+						obj.click(function(){
+							
+							var content=obj.attr("id");
+							$("#description").html("");
+							$("#description").html(content);
+							$('#content_show').modal({
+								keyboard : true,
+								backdrop : true,
+								show : true,
+								remote : false,
+							});
+						});
+					});
 				}
 			});
 			
 		}
 		load();
-		
-		$("#a_question").click(
-			function(){
-				$('#dialogshow').modal({
-					keyboard : true,
-					backdrop : true,
-					show : true,
-					remote : false,
-				});
-			}		
-		);
-		
-		$("#questionSave").click(
-			function(){
-				debugger;
-				if($("#questionSave").html()!="回复"){
-					$("#parentId").val("");
-				}
-				$.ajax({
-					type:'get',
-					url:"${pageContext.request.contextPath}/admin/message/saveAjax",
-					data: $("#taskInfo").serializeArray(),
-					success:function(data){
-						debugger;
-						if(data.code==1){
-							$('#dialogshow').modal('hide');
-							load();
-						}else{
-							$('#dialogshow').modal('hide');
-							alert(data.message);
-						}
-						
-					}
-				});
-			}		
-		);
 		$('.date-picker').datepicker({
 			autoclose: true,
 			todayHighlight: true,
 			language: 'zh-CN'
 		});
+		var oTable1 = $('#sample-table-2').dataTable( {
+		"aoColumns": [
+	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false}
+		] } );
+		
+		
+		$('table th input:checkbox').on('click' , function(){
+			var that = this;
+			$(this).closest('table').find('tr > td:first-child input:checkbox')
+			.each(function(){
+				this.checked = that.checked;
+				$(this).closest('tr').toggleClass('selected');
+			});
+				
+		});
 	
+	
+		$('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+		function tooltip_placement(context, source) {
+			var $source = $(source);
+			var $parent = $source.closest('table')
+			var off1 = $parent.offset();
+			var w1 = $parent.width();
+	
+			var off2 = $source.offset();
+			var w2 = $source.width();
+	
+			if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+			return 'left';
+		}
 	})
 	</script>
 </body>

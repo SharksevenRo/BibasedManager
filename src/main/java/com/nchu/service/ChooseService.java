@@ -6,4 +6,6 @@ import com.nchu.model.TbChoose;
 
 @Service
 public class ChooseService extends BaseService<TbChoose>{
+	
+
 }

@@ -100,11 +100,9 @@
 							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>课题编号</th>
-										<th>课题名称</th>
-										<th>详情</th>
-										<th>截止时间</th>
-										<th>选择</th>
+										<th>老师工号</th>
+										<th>老师姓名</th>
+										<th>联系方式</th>
 									</tr>
 								</thead>
 
@@ -114,63 +112,6 @@
 							</table>
 							<!-- PAGE CONTENT ENDS -->
 						</div>
-							<div class="modal fade" role="dialog" id="dialogshow">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">添加课题</h4>
-					</div>
-					<div class="modal-body">
-						<div class="container-fluid">
-							<!-- PAGE CONTENT BEGINS -->
-									<form id="taskInfo">
-										<input name="id" type="hidden" id="input_task_id">
-									<!-- 课题名称 -->
-									<div class="div form-group col-md-12">
-										<label for="form-field-2" class="col-sm-2 control-label no-padding-right">课题名称:</label>
-										<div class="col-sm-10">
-											<input id="input_task_name" type="text" name="name" placeholder="课题名称" class="form-control col-xs-10 col-md-8" />
-										</div>
-									</div>
-									<!-- 课题地址 -->
-									<div class="space-6"></div>
-									<div class="div form-group col-md-12">
-										<label for="form-field-3" class="col-md-2 control-label no-padding-right">课题详情:</label>
-										<div class="col-md-10">
-											<textarea class="form-control col-xs-10 col-md-8" id="input_task_description" name="description" placeholder="课题详情"></textarea>
-										</div>
-									</div>
-									<div class="div form-group col-md-12">
-										<div class="space-6"></div>
-										<label for="form-field-8" class="col-md-2 control-label no-padding-right date-picker">截止时间:</label>
-										<div class="col-md-10 input-icon input-icon-right">
-											<input id="datepicker" name="limitime" type="text" class="a form-control date-picker" placeholder="截止时间" />
-										</div>
-									</div>
-									
-								<div >
-									<div class="space-12"></div>
-									<div style="margin-left:100px;margin-top:20px;">
-										<button  id="taskSave" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
-											添加
-										</button>
-										<button id="communityReset" style="margin-left:25px" class="btn btn-success col-md-3" type="reset">
-											重置
-										</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<!-- /.modal-content -->
-			</div>
-			<!-- /.modal-dialog -->
-		</div>
 					</div>
 				</div>
 			</div>
@@ -195,7 +136,8 @@
 		function load(){
 			$.ajax({
 				type:'get',
-				url:"${pageContext.request.contextPath }/admin/task/student",
+				data:{roleId:3},
+				url:"${pageContext.request.contextPath }/admin/user/page",
 				success:function(data){
 					debugger;
 					var content=$("#tbbody");
@@ -206,34 +148,29 @@
 							item+="<tr>"
 							+"<td>"+data[i].id+"</td>"
 							+"<td>"+data[i].name+"</td>"
-							+"<td>"+data[i].description+"</td>"
-							+"<td>"+data[i].limitime+"</td>"
-							+"<td>"
-						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"btn_choose\" id=\""+data[i].id+"\" href=\"javascript:void(0)\" name=\""+data[i].id+"\" oper=\"delete\">"
-						+"<i class=\"fa fa-check bigger-150\">点击选择课题</i>"
-						+"</a>"
-					+"</div>"
-						+"</td>"
+							+"<td>"+data[i].phone+"</td>"
 						+"</tr>"
+						
 						}
 						content.html("");
 						content.append(item);
 					}
-					$(".btn_choose").each(
+
+					$(".btn_task").each(
 							
 							function(){
-								debugger;
 								var obj=$(this);
 								obj.click(
 									function(){
+										var oper=obj.attr("oper");
 										
+										if(oper=='delete'){
 											var id=obj.attr("id")
 											$.ajax({
 												type:'get',
-												url:"${pageContext.request.contextPath }/stduent/chooseAjax",
+												url:"${pageContext.request.contextPath }/stduent/chooseTeacher",
 												async:false,
-												data:{'task.id':id},
+												data:{id:id},
 												success:function(data){
 													if(data.code==1){
 														alert(data.message);
@@ -243,6 +180,7 @@
 												}
 											});
 										}
+									}		
 								);
 							}		
 						);

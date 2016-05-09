@@ -1,14 +1,8 @@
 package com.nchu.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,14 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.nchu.model.TbChoose;
 import com.nchu.model.TbRoleFunction;
 import com.nchu.model.TbUser;
-import com.nchu.service.BaseService;
 import com.nchu.service.ChooseService;
 import com.nchu.service.RoleFunctionService;
+import com.nchu.service.UserService;
 import com.nchu.util.Md5;
 import com.nchu.web.support.MenuRender;
 import com.nchu.web.support.MessageBean;
@@ -36,8 +29,7 @@ import com.nuhu.constant.APPConstant;
 public class UserController {
 
 	@Autowired
-	@Qualifier("baseService")
-	private BaseService<TbUser> baseService;
+	private UserService baseService;
 	@Autowired
 	private ChooseService chooseService;
 	@Autowired
@@ -85,7 +77,7 @@ public class UserController {
 				}
 			}
 
-			return "/error/404.html";
+			return "/login";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "/erro/404.html";
@@ -131,7 +123,7 @@ public class UserController {
 	public List<TbUser> page(TbUser user) {
 
 		try {
-			return baseService.loadAll(user);
+			return baseService.getAll(user);
 		} catch (Exception e) {
 			return null;
 		}

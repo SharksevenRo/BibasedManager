@@ -83,7 +83,7 @@
 							<a href="javascript:void(0)">毕设管理系统</a>
 						</li>
 						<li>
-							<a href="javascript:void(0)">课题管理</a>
+							<a href="javascript:void(0)">通知管理</a>
 						</li>
 					</ul>
 					<jsp:include page="../WebPart/SearchBox.jsp"></jsp:include>
@@ -94,17 +94,24 @@
 					<div class="row">
 						<div class="col-xs-12">
 							<!-- PAGE CONTENT BEGINS -->
-							<h3 class="header smaller lighter blue">所有课题</h3>
+							<h3 class="header smaller lighter blue">所有通知</h3>
 
-							<div class="table-header">课题列表</div>
+							<div class="table-header">通知列表</div>
+							<th>
+											<p class="text-center">
+												<a class="blue buttongoods" href="javascript:void(0)"
+													id="buttonadd" oper="add"> <i
+													class="fa fa-plus-square-o bigger-150"><strong>发布通知</strong>
+												</i> </a>
+											</p>
+										</th>
 							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
-										<th>课题编号</th>
-										<th>课题名称</th>
-										<th>详情</th>
-										<th>截止时间</th>
-										<th>选择</th>
+										<th>通知标题</th>
+										<th>发布时间</th>
+										<th>接受对象</th>
+										<th>操作</th>
 									</tr>
 								</thead>
 
@@ -122,40 +129,46 @@
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">添加课题</h4>
+						<h4 class="modal-title" id="gridSystemModalLabel">添加通知</h4>
 					</div>
 					<div class="modal-body">
 						<div class="container-fluid">
 							<!-- PAGE CONTENT BEGINS -->
-									<form id="taskInfo">
-										<input name="id" type="hidden" id="input_task_id">
-									<!-- 课题名称 -->
+									<form id="noticeInfo">
+									<input type="hidden" id="currentId" name="sender.id" value="${sessionScope.user.id}">
+									<input type="hidden" id="currentId" name="receiver.id" value="${sessionScope.user.id}">
+									<!-- 通知名称 -->
 									<div class="div form-group col-md-12">
-										<label for="form-field-2" class="col-sm-2 control-label no-padding-right">课题名称:</label>
+										<label for="form-field-2" class="col-sm-2 control-label no-padding-right">通知标题:</label>
 										<div class="col-sm-10">
-											<input id="input_task_name" type="text" name="name" placeholder="课题名称" class="form-control col-xs-10 col-md-8" />
+											<input id="input_task_name" type="text" name="title" placeholder="通知名称" class="form-control col-xs-10 col-md-8" />
 										</div>
 									</div>
-									<!-- 课题地址 -->
+									<!-- 通知地址 -->
 									<div class="space-6"></div>
 									<div class="div form-group col-md-12">
-										<label for="form-field-3" class="col-md-2 control-label no-padding-right">课题详情:</label>
+										<label for="form-field-3" class="col-md-2 control-label no-padding-right">通知详情:</label>
 										<div class="col-md-10">
-											<textarea class="form-control col-xs-10 col-md-8" id="input_task_description" name="description" placeholder="课题详情"></textarea>
+											<textarea class="form-control col-xs-10 col-md-8" id="input_task_description" name="content" placeholder="通知详情"></textarea>
 										</div>
 									</div>
 									<div class="div form-group col-md-12">
+										<input id="stuvisible" type="hidden" name="stuvisible"> 
 										<div class="space-6"></div>
-										<label for="form-field-8" class="col-md-2 control-label no-padding-right date-picker">截止时间:</label>
+										<label for="form-field-8" class="col-md-2 control-label no-padding-right date-picker">接收的小组:</label>
 										<div class="col-md-10 input-icon input-icon-right">
-											<input id="datepicker" name="limitime" type="text" class="a form-control date-picker" placeholder="截止时间" />
+											<select id="sec-visible" name="teavisible" >
+												<option value="0">全部</option>
+												<option value="1">学生</option>
+												<option value="2">老师</option>
+											</select>
 										</div>
 									</div>
 									
 								<div >
 									<div class="space-12"></div>
 									<div style="margin-left:100px;margin-top:20px;">
-										<button  id="taskSave" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
+										<button  id="noticeSave" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
 											添加
 										</button>
 										<button id="communityReset" style="margin-left:25px" class="btn btn-success col-md-3" type="reset">
@@ -177,6 +190,28 @@
 		</div>
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
+		<div class="modal fade" role="dialog" id="content_show">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="gridSystemModalLabel">通知详情</h4>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<!-- PAGE CONTENT BEGINS -->
+							<p id="description">
+							</p>		
+						</div>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
 	<!-- page specific plugin scripts -->
 	<script src="${pageContext.request.contextPath }/assets/js/jquery.form.js"></script>
@@ -193,9 +228,12 @@
 		
 		//获取数据
 		function load(){
+			debugger;
 			$.ajax({
-				type:'get',
-				url:"${pageContext.request.contextPath }/admin/task/student",
+				type:'post',
+				async:false,
+				data:{'sender.id':$("#currentId").val().trim()},
+				url:"${pageContext.request.contextPath }/admin/notice/page",
 				success:function(data){
 					debugger;
 					var content=$("#tbbody");
@@ -203,53 +241,127 @@
 					if(data!=null&&data.length>0){
 						
 						for(var i=0;i<data.length;i++){
+							var teacher =data[i].receiver;
 							item+="<tr>"
-							+"<td>"+data[i].id+"</td>"
-							+"<td>"+data[i].name+"</td>"
-							+"<td>"+data[i].description+"</td>"
-							+"<td>"+data[i].limitime+"</td>"
-							+"<td>"
-						+"<div class=\"hidden-sm hidden-xs action-buttons\">"
-						+"<a class=\"btn_choose\" id=\""+data[i].id+"\" href=\"javascript:void(0)\" name=\""+data[i].id+"\" oper=\"delete\">"
-						+"<i class=\"fa fa-check bigger-150\">点击选择课题</i>"
-						+"</a>"
-					+"</div>"
-						+"</td>"
+							+"<td><a class=\"read\" id=\""+data[i].content+"\" href=\"javascript:void(0)\">"+data[i].title+"</td>"
+							+"<td>"+data[i].time+"</td>";
+							if(data[i].stuvisible==1&&data[i].teavisible!=1){
+								item+="<td>学生</td>";
+							}
+							if(data[i].teavisible==1&&data[i].stuvisible!=1){
+								item+="<td>老师</td>";
+							}
+							if(data[i].stuvisible==1&&data[i].teavisible==1){
+								item+="<td>全部</td>";
+							}
+							item+="<td>"
+							+"<div class=\"hidden-sm hidden-xs action-buttons\">"
+							+"<a class=\"red btn_task\" id=\""+data[i].id+"\" href=\"javascript:void(0)\" name=\""+data[i].id+"\" oper=\"delete\">"
+							+"<i class=\"fa fa-trash-o bigger-150\">删除</i>"
+							+"</a>"
+							+"</td>"
+						+"</div>"
 						+"</tr>"
+						
 						}
 						content.html("");
 						content.append(item);
 					}
-					$(".btn_choose").each(
+
+					$(".btn_task").each(
 							
 							function(){
-								debugger;
 								var obj=$(this);
 								obj.click(
 									function(){
-										
-											var id=obj.attr("id")
-											$.ajax({
-												type:'get',
-												url:"${pageContext.request.contextPath }/stduent/chooseAjax",
-												async:false,
-												data:{'task.id':id},
-												success:function(data){
-													if(data.code==1){
-														alert(data.message);
-													}else{
-														alert(data.message);
-													}
+										var id=obj.attr("id")
+										$.ajax({
+											type:'get',
+											url:"${pageContext.request.contextPath }/admin/notice/deleteAjax",
+											async:false,
+											data:{id:id},
+											success:function(data){
+												if(data.code==1){
+													alert(data.message);
+													load();
+												}else{
+													load();
+													alert(data.message);
+													
 												}
-											});
-										}
+											}
+										});
+									}
 								);
 							}		
 						);
-				}
-			});
+					$(".read").each(function(){
+								
+								var obj=$(this);
+								obj.click(function(){
+									debugger;
+									var content=obj.attr("id");
+									$("#description").html("");
+									$("#description").html(content);
+									$('#content_show').modal({
+										keyboard : true,
+										backdrop : true,
+										show : true,
+										remote : false,
+									});
+								});
+							});
+						}
+					});
 			
 		}
+		$("#buttonadd").click(function(){
+			
+			$('#dialogshow').modal({
+				keyboard : true,
+				backdrop : true,
+				show : true,
+				remote : false,
+			});
+			
+		});
+		$("#noticeSave").click(
+				function(){
+					
+					debugger;
+					var visible=$("#sec-visible").val();
+					
+					if(visible==0){
+						$("#stuvisible").val(1);
+						$("#sec-visible").val(1);
+					}
+					if(visible==1){
+						$("#stuvisible").val(1);
+						$("#sec-visible").val(0);
+					}
+					if(visible==2){
+						$("#stuvisible").val(0);
+						$("#sec-visible").val(1);
+					}
+					$.ajax({
+						type:'get',
+						url:"${pageContext.request.contextPath }/admin/notice/saveAjax",
+						data: $("#noticeInfo").serializeArray(),
+						success:function(data){
+							debugger;
+							if(data.code==1){
+								$('#dialogshow').modal('hide');
+								load();
+							}else{
+								$('#dialogshow').modal('hide');
+								alert(data.message);
+								load();
+							}
+							
+						}
+					});
+				}		
+			);
 		load();
 		$('.date-picker').datepicker({
 			autoclose: true,

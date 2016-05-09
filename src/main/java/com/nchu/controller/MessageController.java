@@ -3,18 +3,19 @@ package com.nchu.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nchu.hibnernate.support.Page;
 import com.nchu.model.TbMessage;
-import com.nchu.service.BaseService;
+import com.nchu.service.MessageService;
 import com.nchu.web.support.MessageBean;
 import com.nuhu.constant.APPConstant;
 
+@Controller
 public class MessageController {
 	@Autowired
-	private BaseService<TbMessage> baseService;
+	private MessageService baseService;
 
     @RequestMapping("/admin/message/saveAjax")
     @ResponseBody
@@ -59,7 +60,7 @@ public class MessageController {
     public List<TbMessage> page(TbMessage messagePage) {
 
         try {
-            return baseService.loadAll(messagePage);
+            return baseService.getAll(messagePage);
         } catch (Exception e) {
            return null;
         }

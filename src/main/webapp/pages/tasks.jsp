@@ -102,6 +102,10 @@
 													id="buttonadd" oper="add"> <i
 													class="fa fa-plus-square-o bigger-150"><strong>添加课题</strong>
 												</i> </a>
+												<a class="blue buttongoods" href="javascript:void(0)"
+													id="buttonfinfish" oper="add"> <i
+													class="fa fa-gavel bigger-150"><strong>结束选题</strong>
+												</i> </a>
 											</p>
 										</th>
 							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
@@ -367,6 +371,20 @@
 				});
 			}		
 		);
+		
+		$("#buttonfinfish").click(function(){
+			
+			alert("确定结束学生选题，请确认所有学生是否已经选题");
+			
+			$.ajax({
+				
+				type:"get",
+				url:"${pageContext.request.contextPath}/admin/task/finish",
+				success:function(data){
+					
+				}
+			});
+		});
 	})
 	</script>
 </body>

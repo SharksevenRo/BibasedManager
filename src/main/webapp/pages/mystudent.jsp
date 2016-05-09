@@ -103,6 +103,7 @@
 									<tr>
 										<th>学生姓名</th>
 										<th>学号</th>
+										<th>学生的课题</th>
 									</tr>
 								</thead>
 
@@ -144,12 +145,24 @@
 					debugger;
 					var content=$("#tbbody");
 					var item="";
+					debugger;
 					if(data!=null&&data.length>0){
 						
 						for(var i=0;i<data.length;i++){
 							item+="<tr>"
 							+"<td>"+data[i].name+"</td>"
-							+"<td>"+data[i].code+"</td>"
+							+"<td>"+data[i].code+"</td>";
+							
+							if(data[i].tasks==null||data[i].tasks.length<=0){
+								item+="<td>未选课题</td>";
+							}else{
+								item+="<td>";
+								var tasks=data[i].tasks;
+								for(var j=0;j<tasks.length;j++){
+									item+=tasks[j].name+"  ";
+								}
+								item+="</td>"
+							}
 						+"</tr>"
 						}
 						content.html("");

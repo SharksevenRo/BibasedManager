@@ -91,48 +91,14 @@
 				<!-- 主要内容 start -->
 				<div class="page-content">
 					<jsp:include page="../WebPart/Skin.jsp"></jsp:include>
-					<div class="row" style="text-align: center;">
-					<div style="text-align: center;">
-							<a href="#" class="btn btn-app btn-primary no-radius" id="a_question">
-								<i class="fa fa-comments-o bigger-150"></i>
-								提问
-								<span class="badge badge-warning badge-left"></span>
-							</a>
-						</div>
-						<div class="col-xs-12">
-								<div class="dd" id="nestable">
+					<div class="row" >
+						<div class="col-sm-12">
+								<div class="dd" class="col-sm-12" id="nestable">
 									<ol class="dd-list" id="question_content">
-										<li class="dd-item" data-id="2">
-											<div class="dd-handle">提问列表</div>
-
-											<ol class="dd-list" >
-												<li class="dd-item" data-id="5">
-													<div class="dd-handle">
-														Item 5
-														<div class="pull-right action-buttons">
-
-															<a class="red" href="#">
-																	回复
-															</a>
-														</div>
-													</div>
-
-												</li>
-												
-
-												<li class="dd-item" data-id="9">
-													<div class="dd-handle btn-yellow no-hover">Item 9</div>
-												</li>
-
-												<li class="dd-item" data-id="10">
-													<div class="dd-handle">Item 10</div>
-												</li>
-											</ol>
-										</li>
 
 									</ol>
 								</div>
-							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -146,20 +112,19 @@
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">向老师提问</h4>
+						<h4 class="modal-title" id="gridSystemModalLabel">回复学生</h4>
 					</div>
 					<div class="modal-body">
 						<div class="container-fluid">
 							<!-- PAGE CONTENT BEGINS -->
 									<form id="taskInfo">
 									<input name="sender.id" type="hidden" value="${sessionScope.user.id }">
-									<input name="receiver.id" type="hidden" value="${sessionScope.user.teacher }">
+									<input name="receiver.id" id="receiver" type="hidden" value="">
 									<input name="parentId" type="hidden" id="parentId" value="">
 									<div class="space-6"></div>
 									<div class="div form-group col-md-12">
-										<label for="form-field-3" class="col-md-2 control-label no-padding-right">问题:</label>
 										<div class="col-md-10">
-											<textarea class="form-control col-xs-10 col-md-8" id="" name="content" placeholder="问题"></textarea>
+											<textarea class="form-control col-xs-10 col-md-8" id="" name="content" placeholder="回复问题"></textarea>
 										</div>
 									</div>
 									
@@ -197,7 +162,7 @@
 			$.ajax({
 				type:'get',
 				async:false,
-				data:{'sender.id':$("#currentId").val()},
+				data:{'receiver.id':$("#currentId").val()},
 				url:"${pageContext.request.contextPath }/admin/message/page",
 				success:function(data){
 					debugger;
@@ -205,30 +170,29 @@
 					var item="";
 					if(data!=null&&data.length>0){
 						for(var i=0;i<data.length;i++){
-							item+="<li class=\"dd-item\" >"
+							item+="<li class=\"dd-item\">"
 							+"<div class=\"dd-handle\">"
 							+data[i].sender.name+"说：<font color=\"red\">"+data[i].content+"</font> "+data[i].time
-							+	"<a class=\"blue reply\" id=\""+data[i].id+"\" href=\"#\">"
+							+	"<a class=\"blue reply\" id=\""+data[i].id+"\"  receiver=\""+data[i].sender.id+"\" href=\"#\">"
 							+		"<i class=\"icon-pencil bigger-130\">回复</i>"
 							+	"</a>"
 						+"</div>";
-						
 							var child=data[i].child;
 							if(child!=null&&child.length>0){
+								item+="<ol class=\"dd-list\">";
 								for(var j=0;j<child.length;j++){
-									item+="<ol class=\"dd-list\">"
-										+"<li class=\"dd-item\" >"
+									item+="<li class=\"dd-item\" >"
 										+"<div class=\"dd-handle\" style=\"text-align:left\">"
-										+child[j].sender.name+"回复:"+child[j].content+""+child[j].time
+										+child[j].sender.name+"回复:"+child[j].content+" "+child[j].time
 										+"<div class=\"pull-right action-buttons\">"
-										+	"<a class=\"blue reply\" id=\""+child[j].id+"\" href=\"#\">"
+										+	"<a class=\"red reply\" id=\""+child[j].id+"\" href=\"#\">"
 										+	"</a>"
 										+"</div>"
 									+"</div>"
-									+"	</li>"
-									+"</ol>";
+									+"</li>"
+									
 								}
-								
+								item+="</ol>";
 							}
 							item+="</li>";
 						}
@@ -243,6 +207,7 @@
 										
 										debugger;
 										$("#parentId").val(obj.attr("id"));
+										$("#receiver").val(obj.attr("receiver"));
 										$("#questionSave").html("回复");
 										$('#dialogshow').modal({
 											keyboard : true,

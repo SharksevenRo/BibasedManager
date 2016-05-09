@@ -4,8 +4,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +18,7 @@ public class TbChoose {
 	
 	private Integer id;
 	private Integer studentId;
-	private Integer taskId;
+	private TbTask task;
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -33,11 +36,13 @@ public class TbChoose {
 	public void setStudentId(Integer studentId) {
 		this.studentId = studentId;
 	}
-	@Column(name = "taskid")
-	public Integer getTaskId() {
-		return taskId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "taskid")
+	public TbTask getTask() {
+		return task;
 	}
-	public void setTaskId(Integer taskId) {
-		this.taskId = taskId;
+	public void setTask(TbTask task) {
+		this.task = task;
 	}
+	
 }
