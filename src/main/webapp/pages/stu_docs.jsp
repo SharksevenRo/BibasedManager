@@ -83,7 +83,7 @@
 							<a href="javascript:void(0)">毕设管理系统</a>
 						</li>
 						<li>
-							<a href="javascript:void(0)">学生提问</a>
+							<a href="javascript:void(0)">学生上交文档管理</a>
 						</li>
 					</ul>
 					<jsp:include page="../WebPart/SearchBox.jsp"></jsp:include>
@@ -91,27 +91,34 @@
 				<!-- 主要内容 start -->
 				<div class="page-content">
 					<jsp:include page="../WebPart/Skin.jsp"></jsp:include>
-					<div class="row" style="text-align: center;">
-						<div style="text-align: center;">
-							<a href="#" class="btn btn-app btn-primary no-radius" id="a_question">
-								<i class="fa fa-comments-o bigger-150"></i>
-								提问
-								<span class="badge badge-warning badge-left"></span>
-							</a>
-						</div>
+					<div class="row">
 						<div class="col-xs-12">
-								<div class="dd" id="nestable">
-									<ol class="dd-list" id="question_content">
+							<!-- PAGE CONTENT BEGINS -->
+							<h3 class="header smaller lighter blue">所有学生上交文档</h3>
 
-									</ol>
-								</div>
-							</div>
+							<div class="table-header">学生上交文档列表</div>
+							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>文档名称</th>
+										<th>下载</th>
+										<th>打分</th>
+									</tr>
+								</thead>
+
+								<tbody id="tbbody">
+									
+								</tbody>
+							</table>
+							<!-- PAGE CONTENT ENDS -->
+						</div>
 					</div>
 				</div>
 			</div>
+			<input id="teacher" type="hidden">
 		</div>
 		
-	<div class="modal fade" role="dialog" id="dialogshow">
+					<div class="modal fade" role="dialog" id="dialogshow">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -119,28 +126,26 @@
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="gridSystemModalLabel">向老师提问</h4>
+						<h4 class="modal-title" id="gridSystemModalLabel">添加课题</h4>
 					</div>
 					<div class="modal-body">
 						<div class="container-fluid">
 							<!-- PAGE CONTENT BEGINS -->
 									<form id="taskInfo">
-									<input name="sender.id" type="hidden" value="${sessionScope.user.id }">
-									<input name="receiver.id" type="hidden" value="${sessionScope.user.teacher }">
-									<input name="parentId" type="hidden" id="parentId" value="">
-									<div class="space-6"></div>
+										<input name="id" type="hidden" id="input_score">
+									<!-- 课题名称 -->
 									<div class="div form-group col-md-12">
-										<label for="form-field-3" class="col-md-2 control-label no-padding-right">问题:</label>
-										<div class="col-md-10">
-											<textarea class="form-control col-xs-10 col-md-8" id="" name="content" placeholder="问题"></textarea>
+										<label for="form-field-2" class="col-sm-2 control-label no-padding-right">课题名称:</label>
+										<div class="col-sm-10">
+											<input id="score"  type="text" name="score" placeholder="分数" class="form-control col-xs-10 col-md-8" />
 										</div>
 									</div>
 									
 								<div >
 									<div class="space-12"></div>
 									<div style="margin-left:100px;margin-top:20px;">
-										<button  id="questionSave" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
-											提问
+										<button  id="btn_score" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
+											打分
 										</button>
 									</div>
 								</div>
@@ -150,9 +155,9 @@
 				</div>
 				<!-- /.modal-content -->
 			</div>
+			<input id="currenId" type="hidden" value="${sessionScope.user.id }"> 
 			<!-- /.modal-dialog -->
 		</div>
-		<input type="hidden" id="currentId" value="${sessionScope.user.id }"> 
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
@@ -160,120 +165,125 @@
 	<script src="${pageContext.request.contextPath }/assets/js/jquery.form.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/js/jquery-ui.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/js/jquery.ui.touch-punch.js"></script>
-	<script src="${pageContext.request.contextPath }/assets/js/jquery.nestable.min.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/jquery.gritter.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/jquery.dataTables.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/extensions/TableTools/js/dataTables.tableTools.js"></script>
+	<script src="${pageContext.request.contextPath }/assets/js/dataTables/extensions/ColVis/js/dataTables.colVis.js"></script>
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">
 	jQuery(function($) {
+		
 		//获取数据
 		function load(){
-			debugger;
 			$.ajax({
 				type:'get',
-				async:false,
-				data:{'sender.id':$("#currentId").val()},
-				url:"${pageContext.request.contextPath }/admin/message/page",
+				data:{"owner.id":$("#currenId").val()},
+				url:"${pageContext.request.contextPath }/admin/media/page",
 				success:function(data){
 					debugger;
-					var content=$("#question_content");
+					var content=$("#tbbody");
 					var item="";
 					if(data!=null&&data.length>0){
+						
 						for(var i=0;i<data.length;i++){
-							item+="<li class=\"dd-item\">"
-							+"<div class=\"dd-handle\">"
-							+data[i].time+" "+data[i].sender.name+"问：<font color=\"red\">"+data[i].content+"</font> "
-							+	"<a class=\"blue reply pull-right\" id=\""+data[i].id+"\"  receiver=\""+data[i].sender.id+"\" href=\"#\">"
-							+		"<i class=\"fa fa-paper-plane-o bigger-130\">回复</i>"
-							+	"</a>"
-						+"</div>";
-							var child=data[i].child;
-							if(child!=null&&child.length>0){
-								item+="<ol class=\"dd-list\">";
-								for(var j=0;j<child.length;j++){
-									item+="<li class=\"dd-item\" >"
-										+"<div class=\"dd-handle\" style=\"text-align:left\">"
-										+child[j].time+" "+child[j].sender.name+"回复:<font color=\"red\">"+child[j].content+"</font>"
-										+"<div class=\"pull-right action-buttons\">"
-										+	"<a class=\"red reply\" id=\""+child[j].id+"\" href=\"#\">"
-										+	"</a>"
-										+"</div>"
-									+"</div>"
-									+"</li>"
-									
-								}
-								item+="</ol>";
+							
+							var owner=data[i].owner;
+							item+="<tr>"
+							+"<td>"+data[i].name+"</td>"
+							+"<td><a href=\"${pageContext.request.contextPath }/admin/media/download?id="+data[i].id+"\">下载 "+data[i].name+"<a></td>";
+							if(data[i].score==null){
+								item+="<td>还未打分</td>"
+							}else{
+								item+="<td>"+data[i].score+"</td>";
 							}
-							item+="</li>";
+							item+="</tr>"
 						}
 						content.html("");
 						content.append(item);
-						
-						$(".reply").each(
+					}
+					$(".btn_task").each(
+							
 							function(){
 								var obj=$(this);
 								obj.click(
 									function(){
-										
-										debugger;
-										$("#parentId").val(obj.attr("id"));
-										$("#questionSave").html("回复");
+										$("#input_score").val(obj.attr("id"));
 										$('#dialogshow').modal({
 											keyboard : true,
 											backdrop : true,
 											show : true,
 											remote : false,
 										});
-									}		
+									}
 								);
 							}		
 						);
-					}
 				}
 			});
 			
 		}
 		load();
-		
-		$("#a_question").click(
-			function(){
-				$('#dialogshow').modal({
-					keyboard : true,
-					backdrop : true,
-					show : true,
-					remote : false,
-				});
-			}		
-		);
-		
-		$("#questionSave").click(
-			function(){
-				if($("#questionSave").html()!="回复"){
-					$("#parentId").val("");
-				}
-				$.ajax({
-					type:'get',
-					url:"${pageContext.request.contextPath}/admin/message/saveAjax",
-					data: $("#taskInfo").serializeArray(),
-					success:function(data){
-						debugger;
-						$("#questionSave").html("提问")
-						if(data.code==1){
-							$('#dialogshow').modal('hide');
-							load();
-						}else{
-							$('#dialogshow').modal('hide');
-							alert(data.message);
-						}
-						
+		$("#btn_score").click(
+				function(){
+					
+					if($("#score").val()>100){
+						alert("分数不能大于100");
+						return;
 					}
-				});
-			}		
+						$.ajax({
+							type:'get',
+							url:"${pageContext.request.contextPath }/admin/media/score",
+							async:false,
+							data:$("#taskInfo").serializeArray(),
+							success:function(data){
+								if(data.code==1){
+									$('#dialogshow').modal('hide');
+									alert(data.message);
+									load();
+								}else{
+									$('#dialogshow').modal('hide');
+									alert(data.message);
+								}
+							}
+						});
+				}			
 		);
 		$('.date-picker').datepicker({
 			autoclose: true,
 			todayHighlight: true,
 			language: 'zh-CN'
 		});
+		var oTable1 = $('#sample-table-2').dataTable( {
+		"aoColumns": [
+	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}
+		] } );
+		
+		
+		$('table th input:checkbox').on('click' , function(){
+			var that = this;
+			$(this).closest('table').find('tr > td:first-child input:checkbox')
+			.each(function(){
+				this.checked = that.checked;
+				$(this).closest('tr').toggleClass('selected');
+			});
+				
+		});
 	
+	
+		$('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+		function tooltip_placement(context, source) {
+			var $source = $(source);
+			var $parent = $source.closest('table')
+			var off1 = $parent.offset();
+			var w1 = $parent.width();
+	
+			var off2 = $source.offset();
+			var w2 = $source.width();
+	
+			if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+			return 'left';
+		}
 	})
 	</script>
 </body>

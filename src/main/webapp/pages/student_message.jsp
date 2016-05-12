@@ -97,21 +97,12 @@
 							<h3 class="header smaller lighter blue">所有通知</h3>
 
 							<div class="table-header">通知列表</div>
-							<th>
-											<p class="text-center">
-												<a class="blue buttongoods" href="javascript:void(0)"
-													id="buttonadd" oper="add"> <i
-													class="fa fa-plus-square-o bigger-150"><strong>发布通知</strong>
-												</i> </a>
-											</p>
-										</th>
 							<table id="sample-table-2" style="text-align: center" class="table table-striped table-bordered table-hover">
 								<thead>
 									<tr>
 										<th>通知标题</th>
 										<th>发布时间</th>
 										<th>发布者</th>
-										<th>接受对象</th>
 									</tr>
 								</thead>
 
@@ -148,7 +139,7 @@
 			</div>
 			<!-- /.modal-dialog -->
 		</div>
-		<input id="currentId" type="hidden" value="${sessionScope.user.teahcer }">
+		<input id="currentId" type="hidden" value="${sessionScope.user.teacher }">
 		<jsp:include page="../WebPart/CopyRight.jsp"></jsp:include>
 	</div>
 	<jsp:include page="../WebPart/Script.jsp"></jsp:include>
@@ -171,7 +162,7 @@
 			$.ajax({
 				type:'post',
 				async:false,
-				data:{'receiver.id':$("#currentId").val(),teavisible:1},
+				data:{'receiver.id':$("#currentId").val(),stuvisible:1},
 				url:"${pageContext.request.contextPath }/admin/notice/page",
 				success:function(data){
 					debugger;
@@ -185,11 +176,6 @@
 							+"<td><a class=\"read\" id=\""+data[i].content+"\" href=\"javascript:void(0)\">"+data[i].title+"</td>"
 							+"<td>"+data[i].time+"</td>"
 							+"<td>"+sender.name+"</td>";
-							if(data[i].teavisible==1){
-								item+="<td>所有小组</td>";
-							}else{
-								item+="<td>"+teacher.name+"老师小组</td>"
-							}
 							item+="</tr>"
 						}
 						content.html("");
@@ -223,7 +209,7 @@
 		});
 		var oTable1 = $('#sample-table-2').dataTable( {
 		"aoColumns": [
-	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}, {"bSortable" : false}
+	      {"bSortable" : false}, {"bSortable" : false},{"bSortable" : false}
 		] } );
 		
 		

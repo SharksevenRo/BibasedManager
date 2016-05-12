@@ -26,7 +26,8 @@ public class NoticeService extends BaseService<TbNotice>{
 			criterions=new Criterion[]{Restrictions.eq("teavisible", notice.getTeavisible())};
 		}
 		if(notice.getStuvisible()!=null){
-			criterions=new Criterion[]{Restrictions.eq("stuvisible", notice.getStuvisible())};
+			Criterion [] criterion1 = new Criterion[]{Restrictions.eq("stuvisible", notice.getStuvisible()),Restrictions.eq("receiver", notice.getReceiver())};
+			criterions=new Criterion[]{Restrictions.or(criterion1)};
 		}
 		
 		if(notice.getTeavisible()!=null&&notice.getSender()!=null){

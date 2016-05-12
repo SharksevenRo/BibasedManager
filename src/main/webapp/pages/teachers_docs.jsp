@@ -148,9 +148,6 @@
 										<button  id="btn_score" style="margin-left:10px" class="btn btn-info col-md-3" type="button">
 											打分
 										</button>
-										<button id="communityReset" style="margin-left:25px" class="btn btn-success col-md-3" type="reset">
-											重置
-										</button>
 									</div>
 								</div>
 							</form>

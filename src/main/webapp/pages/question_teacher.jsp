@@ -172,9 +172,9 @@
 						for(var i=0;i<data.length;i++){
 							item+="<li class=\"dd-item\">"
 							+"<div class=\"dd-handle\">"
-							+data[i].sender.name+"说：<font color=\"red\">"+data[i].content+"</font> "+data[i].time
-							+	"<a class=\"blue reply\" id=\""+data[i].id+"\"  receiver=\""+data[i].sender.id+"\" href=\"#\">"
-							+		"<i class=\"icon-pencil bigger-130\">回复</i>"
+							+data[i].time+" "+data[i].sender.name+"问：<font color=\"red\">"+data[i].content+"</font> "
+							+	"<a class=\"blue reply pull-right\" id=\""+data[i].id+"\"  receiver=\""+data[i].sender.id+"\" href=\"#\">"
+							+		"<i class=\"fa fa-paper-plane-o bigger-130\">回复</i>"
 							+	"</a>"
 						+"</div>";
 							var child=data[i].child;
@@ -183,7 +183,7 @@
 								for(var j=0;j<child.length;j++){
 									item+="<li class=\"dd-item\" >"
 										+"<div class=\"dd-handle\" style=\"text-align:left\">"
-										+child[j].sender.name+"回复:"+child[j].content+" "+child[j].time
+										+child[j].time+" "+child[j].sender.name+"回复:<font color=\"red\">"+child[j].content+"</font>"
 										+"<div class=\"pull-right action-buttons\">"
 										+	"<a class=\"red reply\" id=\""+child[j].id+"\" href=\"#\">"
 										+	"</a>"

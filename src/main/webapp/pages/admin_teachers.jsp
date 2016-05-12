@@ -146,7 +146,7 @@
 						
 						for(var i=0;i<data.length;i++){
 							item+="<tr>"
-							+"<td>"+data[i].id+"</td>"
+							+"<td>"+data[i].code+"</td>"
 							+"<td>"+data[i].name+"</td>"
 							+"<td>"+data[i].phone+"</td>"
 						+"</tr>"

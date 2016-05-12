@@ -97,7 +97,7 @@
 							<h3 class="header smaller lighter blue">所有通知</h3>
 
 							<div class="table-header">通知列表</div>
-							<th>
+										<th>
 											<p class="text-center">
 												<a class="blue buttongoods" href="javascript:void(0)"
 													id="buttonadd" oper="add"> <i

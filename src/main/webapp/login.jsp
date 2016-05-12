@@ -196,8 +196,6 @@
 													<div class="control-group">
 														<input name="roleId" type="radio" class="ace" value="1"/>
 														<span class="lbl"> 学生 </span>
-														<input name="roleId" type="radio" class="ace" value="2"/>
-														<span class="lbl"> 管理员</span>
 														<input name="roleId" type="radio" class="ace" value="3"/>
 														<span class="lbl"> 老师</span>
 														<input name="roleId" type="radio" class="ace" value="4"/>
